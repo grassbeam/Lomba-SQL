@@ -2,7 +2,7 @@
 	session_start();
 	define('BASE', 'BASE');
 	require_once './utility/config.php';
-	require_once './utility/database.php';
+	require_once './utility/connection.php';
 	require_once './utility/utility.php';
 	
 ?>
