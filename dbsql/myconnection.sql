@@ -7,7 +7,7 @@ create table contestant (
 create table login (
   username VARCHAR(5) PRIMARY KEY,
   password VARCHAR(10),
-  name_code NOT NULL CONSTRAINT lg_nmc_fk REFERENCES contestant(name_code)
+  name_code VARCHAR(10) CONSTRAINT lg_nmc_fk REFERENCES contestant(name_code) ON DELETE CASCADE
 );
 
 CREATE TABLE problem (
@@ -17,13 +17,14 @@ CREATE TABLE problem (
 
 CREATE TABLE submission (
   sub_id VARCHAR(11) PRIMARY KEY,
+  name_code VARCHAR(10) CONSTRAINT subm_nmc_fk REFERENCES contestant(name_code) ON DELETE CASCADE ,
   submitted_text VARCHAR2(4000) NOT NULL,
   prob_num INT NOT NULL CONSTRAINT subm_submtd_fk REFERENCES problem(prob_num),
   submit_time TIMESTAMP NOT NULL
 );
 
 CREATE TABLE totalscore (
-  name_code PRIMARY KEY CONSTRAINT tots_nc_fk REFERENCES contestant(name_code),
+  name_code PRIMARY KEY CONSTRAINT tots_nc_fk REFERENCES contestant(name_code) ON DELETE CASCADE,
   score INT NOT NULL
 );
 
@@ -42,7 +43,10 @@ INSERT INTO totalscore (name_code, score) VALUES('sql-04', 70);
 INSERT INTO totalscore (name_code, score) VALUES('sql-05', 60);
 INSERT INTO totalscore (name_code, score) VALUES('sql-06', 50);
 
-
-
-
-SELECT * FROM V$NLS_PARAMETERS;
+SELECT c.name_code, c.name, c.school, t.score FROM contestant c, totalscore t WHERE c.name_code = t.name_code ORDER BY t.score DESC;
+SELECT * FROM contestant;
+DELETE FROM contestant;
+DROP TABLE totalscore;
+DROP TABLE login;
+DROP TABLE submission;
+DROP TABLE contestant;

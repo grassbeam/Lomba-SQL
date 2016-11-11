@@ -2,9 +2,11 @@
 	session_start();
 	define('BASE', 'BASE');
 	require_once '../utility/config.php';
-	require_once '../utility/database.php';
+	// require_once '../utility/database.php';
+	require_once '../utility/connection.php';
 	require_once '../utility/utility.php';
-	require_once '../model/scoreboard.php';
+	// require_once '../model/scoreboard.php';
+	require_once '../model/scoreboard-oracle.php';
 	require_once '../controller/scoreboard-controller.php';
 ?>
 

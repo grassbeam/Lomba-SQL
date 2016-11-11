@@ -3,15 +3,16 @@
 	
 	$config['site']['title'] = 'WEBSITE SKRIPSI';
 	
-	//konfig koneksi database jawaban
-	// define('DBHOST', 'localhost');
-	// define('DBUSER', 'root');
-	// define('DBPASS', '');
-	// define('DBNAME', 'db_main');
+	//konfig koneksi MYSQL database jawaban
+	define('DBHOST', 'localhost');
+	define('DBUSER', 'root');
+	define('DBPASS', '');
+	define('DBNAME', 'db_main');
 
+	//konfig koneksi ORACLE database 
 	define('DBSTRINGCON', 'localhost/XE');
-	define('DBUSER', 'system');
-	define('DBPASS', 'oracle');
+	define('DBUSER2', 'system');
+	define('DBPASS2', 'oracle');
 
 	
 ?>

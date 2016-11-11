@@ -1,7 +1,9 @@
 <?php 
-	
-?>
 
+// var_dump($sblist);
+// echo '<br/>';
+// var_dump(count($sblist));	
+?>
 <h1>Scoreboard SQL Programming Competition UNTAR</h1>
 	
 	<table class="scoreboard">
@@ -60,14 +62,14 @@
 					$counter = 1;
 					foreach ($sblist as $scl) {
 						?>
-					<tr class="sortorderswitch" id="team:<?php echo $scl['name_code']?>">
+					<tr class="sortorderswitch" id="team:<?php echo $scl['NAME_CODE']?>">
 						<td class="scorepl"><?php echo $counter; ?></td>
 						<td class="scoreaf"> <img src="../images/IDN.png" alt="IDN" title="IDN" /></td>
 						<td class="scoretn">
-							<?php echo $scl['name']?><br /><span class="univ"><?php echo $scl['school']?></span>
+							<?php echo $scl['NAME']?><br /><span class="univ"><?php echo $scl['SCHOOL']?></span>
 						</td>
 						<td class="scorenc">12</td> <!--Total soal submited -->
-						<td class="scorett"><?php echo $scl['score']?></td>
+						<td class="scorett"><?php echo $scl['SCORE']?></td>
 						<td class="score_correct">3/29</td>
 						<td class="score_correct">9/191</td>
 						<td class="score_correct">3/111</td>
