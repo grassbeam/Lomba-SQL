@@ -58,9 +58,6 @@
 
 		<tbody>
 			<?php
-				// if(isset($sblist)) {
-				// 	$counter = 1;
-				// 	foreach ($sblist as $scl) {
 						?>
 					<tr class="sortorderswitch" id="team:<?php if(isset($_SESSION['NAME_CODE'])) echo $_SESSION['NAME_CODE']; else echo "666"; ?>">
 						<td class="scorepl">?<?php //echo $counter; ?></td>
@@ -83,12 +80,8 @@
 						<td class="score_correct score_first">2/71</td>
 						<td class="score_neutral">0</td>
 					</tr>
-						<?php
-						// $counter++;
-					// }	
-				
+						<?php				
 			?>
-			<?php //} ?>
 		</tbody>	
 	</table>
 </div>
