@@ -5,7 +5,7 @@
 	// require_once '../utility/database.php';
 	require_once '../utility/connection.php';
 	require_once '../utility/utility.php';
-	require_once '../model/user.php';
+	require_once './model/admin.php';
 ?>
 
 
@@ -19,7 +19,7 @@
 	<h2>Input Data</h2>
 	<br>
 	<br>
-	<form action="./" method="POST" enctype="multipart/form-data">
+	<form action="./import.php" method="POST" enctype="multipart/form-data">
 		<label for="file">Pilih File</label>
 		<input type="file" name="file" id="file" accept=".csv" />
 		<br>
@@ -61,6 +61,7 @@ if(isset($_POST['const'])) {
                 $jumlahrowdata = $ct;
                 // var_dump($arr);
                 $US = new DB_USER();
+                $ress = $US->importUser($arr);
             ?>
             <div>
             <table>
@@ -74,16 +75,47 @@ if(isset($_POST['const'])) {
             </thead>
             <tbody>
 			<?php
-				$ress = $US->importUser($arr);
 				foreach ($ress as $row) {
 				?>
-				<tr <?php if(!$row['STATUS']>0) echo "style='background-color: #ff3333;'" ; else echo "style='background-color: #40ff00;'" ;?> >
+				<tr 
+                    <?php 
+                    $statoe = "SUCCESS";
+                    switch ($row['STATUS']) {
+                        case 0:
+                            echo "style='background-color: #ff3333;'" ;
+                            $statoe = "Failed to INSERT CONTESTANT DETAIL";
+                            break;
+                        case -99:
+                             echo "style='background-color: #ff3333;'" ;
+                             $statoe = "Failed to INSERT LOGIN";
+                             break;
+                        case -101:
+                             echo "style='background-color: #ff3333;'" ;
+                             $statoe = "Failed to CREATE DB USER";
+                             break;
+                        case -102:
+                             echo "style='background-color: #ff3333;'" ;
+                             $statoe = "Failed to GRANT ROLE";
+                             break;
+                        case -103:
+                             echo "style='background-color: #ff3333;'" ;
+                             $statoe = "Failed to ALTER USER QUOTA";
+                             break;
+                        default:
+                             echo "style='background-color: #40ff00;'" ;
+                            break;
+                    }
+                    // if(!$row['STATUS'] > 0) {
+                    //     echo "style='background-color: #ff3333;'" ;
+                    // } else echo "style='background-color: #40ff00;'" ;
+                    ?> 
+                >
 					<td><?php echo $row['NAME_CODE']; ?></td>
 					<td><?php echo $row['NAME']; ?></td>
 					<td><?php echo $row['SCHOOL']; ?></td>
 					<td><?php echo $row['USERNAME']; ?></td>
 					<td><?php echo $row['PASSWORD']; ?></td>
-					<td><?php echo $row['STATUS']; ?></td>
+					<td><?php echo $statoe . " (" . $row['STATUS'] . ")"; ?></td>
 				</tr>
 				<?php
 				}

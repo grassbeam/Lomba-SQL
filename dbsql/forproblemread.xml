@@ -1,0 +1,42 @@
+<listAnswer>
+	<problem>
+		<problemNumber>1</problemNumber>
+		<answer>select id_peserta as "ID", nama as "Nama Peserta" from peserta where nama like 'B%' or nama like '%s'</answer>
+	</problem>
+		<problem>
+		<problemNumber>2</problemNumber>
+		<answer>select M.mata_pelajaran as "Mata Pelajaran", G.jurusan as "Jurusan" from pelajaran M, pengajar G, kelas K where K.id_pengajar = G.id_pengajar and K.kode_p = M.kode_p and G.nama = 'Kim'</answer>
+	</problem>
+		<problem>
+		<problemNumber>3</problemNumber>
+		<answer>select P.nama ||' belum memiliki huruf mutu' as "Informasi" from Peserta P, nilai N where N.huruf_mutu is null and P.id_peserta = N.id_peserta</answer>
+	</problem>
+		<problem>
+		<problemNumber>4</problemNumber>
+		<answer>select nama, honor as "Honor sebelum dipotong PPH 5%", honor * 0.05 as "PPH", honor - (honor * 0.05) as "Honor yang diterima" from Pengajar order by honor asc</answer>
+	</problem>
+		<problem>
+		<problemNumber>5</problemNumber>
+		<answer>select jurusan as "Jurusan", min(honor) as "Honor terkecil", avg(honor) as "Honor rata-rata", max(honor) as "Honor terbesar" from Pengajar group by jurusan</answer>
+	</problem>
+		<problem>
+		<problemNumber>6</problemNumber>
+		<answer>select P.nama as "Nama Pengajar", M.mata_pelajaran as "Mata Pelajaran", M.jurusan as "Jurusan" from Pelajaran M, Pengajar P, kelas K where K.id_pengajar = P.id_pengajar and K.kode_p = M.kode_p and K.tahun = '2015' and K.semester = 'Genap'</answer>
+	</problem>
+		<problem>
+		<problemNumber>7</problemNumber>
+		<answer>select P.nama as "Nama Pengajar", count(K.kode_p) as "Jumlah kelas" from pengajar P, kelas K where P.id_pengajar = K.id_pengajar and tahun = '2014' group by P.nama</answer>
+	</problem>
+		<problem>
+		<problemNumber>8</problemNumber>
+		<answer>select S.nama as "Nama Peserta", P.mata_pelajaran as "Mata Pelajaran", N.huruf_mutu as "Nilai Mutu" from Peserta S, Pelajaran P, Nilai N where N.id_peserta = S.id_peserta and N.kode_p = P.kode_p and N.tahun = '2015' and semester = 'Genap' order by S.nama asc</answer>
+	</problem>
+		<problem>
+		<problemNumber>9</problemNumber>
+		<answer>select gedung as "Gedung", count(ruang) as "Intensitas Pemakaian Gedung" from jadwal where semester ='Genap' group by gedung</answer>
+	</problem>
+		<problem>
+		<problemNumber>10</problemNumber>
+		<answer>select nama as "Nama Pengajar", jurusan as "Jurusan", honor as "Honor" from Pengajar where honor > (select avg(honor) from pengajar)</answer>
+	</problem>
+</listAnswer>

@@ -20,13 +20,12 @@
 	<nav>
 		<div id="menutop">
 			<a href="./">home</a>
-			<?php if (!isset($_SESSION['login-id'])) {
+			<?php if (!isset($_SESSION['NAME_CODE'])) {
 				?>
 				<a href="login.php/">login</a>
 			<?php } else {
 				?>
-				<a href="submission.php/">submission</a>
-				<a href="logout.php/">logout</a>
+				<a href="./logout.php">logout</a>
 				<?php
 			}
 			?>
@@ -42,7 +41,11 @@
 	</div>
 	
 	<?php
-		require_once './view/submit.php';
+		if (isset($_SESSION['NAME_CODE'])) {	
+			require_once './view/submit.php';
+		} else {
+
+		}
 	?>	
 
 </body>

@@ -7,7 +7,7 @@
 	require_once '../utility/utility.php';
 	// require_once '../model/scoreboard.php';
 	require_once '../model/scoreboard-oracle.php';
-	require_once '../controller/scoreboard-controller.php';
+	require_once './controller/scoreboard-controller.php';
 ?>
 
 <!DOCTYPE html>
@@ -29,6 +29,7 @@
 			<?php } else {
 				?>
 				<a href="submission.php/">submission</a>
+				<a href="import.php/">import user</a>
 				<a href="logout.php/">logout</a>
 				<?php
 			}
