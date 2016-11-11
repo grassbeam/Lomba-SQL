@@ -1,2 +1,2 @@
 # Lomba-SQL
-Gradle for Lomba SQL
+Grader for Lomba SQL
