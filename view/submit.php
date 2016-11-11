@@ -1,8 +1,9 @@
 <?php
+
 ?>
 
 
-<h2 id="teamwelcome">Welcome Team blablabla</h2>
+<h2 id="teamwelcome">Welcome <?php if(isset($_SESSION['NAME'])) echo $_SESSION['NAME']; else "NO_NAME"; ?></h2>
 
 <div class="teamscoresummary">
 	<table class="scoreboard center">
@@ -61,11 +62,11 @@
 				// 	$counter = 1;
 				// 	foreach ($sblist as $scl) {
 						?>
-					<tr class="sortorderswitch" id="team:<?php //echo $scl['name_code']?>">
+					<tr class="sortorderswitch" id="team:<?php if(isset($_SESSION['NAME_CODE'])) echo $_SESSION['NAME_CODE']; else echo "666"; ?>">
 						<td class="scorepl">?<?php //echo $counter; ?></td>
 						<td class="scoreaf"> <img src="./images/IDN.png" alt="IDN" title="IDN" /></td>
 						<td class="scoretn">
-							<?php //echo $scl['name']?>blashh21<br /><span class="univ">UNTAR<?php //echo $scl['school']?></span>
+							<?php if(isset($_SESSION['NAME'])) echo $_SESSION['NAME']; else "NO_NAME"; ?> <br /><span class="univ"><?php if(isset($_SESSION['SCHOOL'])) echo $_SESSION['SCHOOL']; else "UNKNOWN"; ?></span>
 						</td>
 						<td class="scorenc">12</td> <!--Total soal submited -->
 						<td class="scorett"><?php //echo $scl['score']?>100</td>

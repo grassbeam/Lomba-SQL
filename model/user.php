@@ -14,6 +14,14 @@
 			// var_dump($password);
 			if($row['PASSWORD'] == $password){
 				$_SESSION['NAME_CODE'] = $row['NAME_CODE'];
+				$stid = oci_parse($cons, 'SELECT * FROM contestant where name_code = :bus');
+				oci_bind_by_name($stid, ':bus', $_SESSION['NAME_CODE']);
+				oci_execute($stid);
+				$info = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS);
+				oci_free_statement($stid);
+				$_SESSION['NAME'] = $info['NAME'];
+				$_SESSION['SCHOOL'] = $info['SCHOOL'];
+				// var_dump($_SESSION['SCHOOL']);
 				return true;
 			} else {
 				return NULL;

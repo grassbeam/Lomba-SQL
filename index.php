@@ -22,10 +22,10 @@
 			<a href="./">home</a>
 			<?php if (!isset($_SESSION['NAME_CODE'])) {
 				?>
-				<a href="login.php/">login</a>
+				<a href="./auth/login.php">login</a>
 			<?php } else {
 				?>
-				<a href="./logout.php">logout</a>
+				<a href="./auth/logout.php">logout</a>
 				<?php
 			}
 			?>

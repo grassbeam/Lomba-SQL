@@ -1,10 +1,10 @@
 <?php
 	session_start();
 	define('BASE', 'BASE');
-	require_once './utility/config.php';
-	require_once './utility/connection.php';
-	require_once './utility/utility.php';
-	require_once './model/user.php';
+	require_once '../utility/config.php';
+	require_once '../utility/connection.php';
+	require_once '../utility/utility.php';
+	require_once '../model/user.php';
 	if(isset($_POST['cmd'])) {
 		$username = $_POST['login'];
 		$password = $_POST['passwd'];
@@ -15,7 +15,7 @@
 			$logs = $DBUSER->getLogin($username, $password);
 			// var_dump($logs);
 			if(isset($logs)){
-				redirect('index.php');
+				redirect('../');
 				exit();
 			} else {
 				$invalid = true;
