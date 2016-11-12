@@ -26,7 +26,7 @@ CREATE TABLE submission (
   sub_id VARCHAR(11) PRIMARY KEY,
   name_code VARCHAR(10) CONSTRAINT subm_nmc_fk REFERENCES contestant(name_code) ON DELETE CASCADE ,
   submitted_text VARCHAR2(4000) NOT NULL,
-  prob_num INT NOT NULL CONSTRAINT subm_submtd_fk REFERENCES problem(prob_num),
+  prob_num VARCHAR2(2) NOT NULL CONSTRAINT subm_submtd_fk REFERENCES problem(prob_num),
   status INT NOT NULL, 
   submit_time TIMESTAMP NOT NULL
 );
