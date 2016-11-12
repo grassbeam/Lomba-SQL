@@ -35,7 +35,7 @@ CREATE TABLE scoreboard (
   name_code PRIMARY KEY CONSTRAINT tots_nc_fk REFERENCES contestant(name_code) ON DELETE CASCADE,
   prob_num INT PRIMARY KEY,
   submit_count INT,
-  time INT, 
+  submit_time INT, 
   verdict INT NOT NULL
 );
 --time in MINUTES--
