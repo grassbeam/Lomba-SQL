@@ -22,11 +22,53 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
+	<link rel="stylesheet" href="../css/style.css">
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
 </head>
 <body>
+<script>
+	function kampretos(){
+		var probid = Document.getElementById('probid');
+		var valprobid = probid.option[probid.selectedIndex].value;
+		var langid = Document.getElementById('langid');
+		var vallangid = vallangid.option[langid.selectedIndex].value;
+		var error = false;
+
+		if(valprobid == "") {
+			error = true;
+			probid.className = "errorfield";
+		}
+		if(vallangid == "") {
+			error = true;
+			langid.className = "errorfield";
+		}
+
+		if(error)
+
+	}
+</script>
 	<form action="./" method="POST">
-		<input type="text" name="query" id="query">
-		<input type="submit"/>
+		<input type="file" name="code[]" id="maincode" required multiple />
+	<select name="probid" id="probid">
+	<option value="1">A</option>
+	<option value="2">B</option>
+	<option value="3">C</option>
+	<option value="4">D</option>
+	<option value="5">E</option>
+	<option value="6">F</option>
+	<option value="8">G</option>
+	<option value="9">H</option>
+	<option value="11">I</option>
+	<option value="12">J</option>
+	<option value="" selected="selected">problem</option>
+	</select>
+	<select name="langid" id="langid">
+	<option value="sql">SQL</option>
+	<option value="sql">TXT</option>
+	<option value="" selected="selected">file format</option>
+	</select>
+	<input type="submit" name="submit" id="submit" value="submit"  onclick="return kampretos();" />
+	<input type="reset" value="cancel"  />
 	</form>
 </body>
 </html>

@@ -1,5 +1,9 @@
 <?php
 
+	if (!defined('BASE')) die('<h1 class="try-hack">Restricted access!</h1>');
+
+
+
 ?>
 
 
@@ -130,7 +134,7 @@ $(function() {
 <input type="submit" name="submit" id="submit" value="submit"  onclick="return checkUploadForm();" />
 <input type="reset" value="cancel"  />
 <br /><span id="auxfiles"></span>
-<input type="button" name="addfile" id="addfile" value="Add another file" onclick="addFileUpload();" disabled="disabled" />
+<input type="button" name="addfile" id="addfile" value="Add another file" onclick="addFileUpload();" disabled="false"/>
 <script type="text/javascript">initFileUploads(100);</script>
 
 </p>

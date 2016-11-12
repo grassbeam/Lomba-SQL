@@ -4,5 +4,4 @@
 	require_once '../utility/utility.php';
 	session_destroy();
 	redirect('../');
-	exit();
 ?>

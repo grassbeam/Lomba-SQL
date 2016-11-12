@@ -19,7 +19,7 @@ create table login (
 
 CREATE TABLE problem (
   prob_num INT PRIMARY KEY,
-  solution_query VARCHAR2(4000) NOT NULL
+  solution_query VARCHAR2(255)
 );
 
 CREATE TABLE submission (
@@ -31,11 +31,14 @@ CREATE TABLE submission (
   submit_time TIMESTAMP NOT NULL
 );
 
-CREATE TABLE totalscore (
+CREATE TABLE scoreboard (
   name_code PRIMARY KEY CONSTRAINT tots_nc_fk REFERENCES contestant(name_code) ON DELETE CASCADE,
-  score INT NOT NULL
+  prob_num INT PRIMARY KEY,
+  submit_count INT,
+  time INT, 
+  verdict INT NOT NULL
 );
-
+--time in MINUTES--
 
 --SELECT t.username FROM DBA_USERS t WHERE t.username LIKE 's%';
 drop USER sqluntar001;

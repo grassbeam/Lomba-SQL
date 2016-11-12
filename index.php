@@ -4,6 +4,9 @@
 	require_once './utility/config.php';
 	require_once './utility/connection.php';
 	require_once './utility/utility.php';
+	if(isset($_SESSION['NAME_CODE'])){
+		redirect('./contestant');
+	}
 	
 ?>
 
@@ -39,14 +42,5 @@
 			
 		</script>
 	</div>
-	
-	<?php
-		if (isset($_SESSION['NAME_CODE'])) {	
-			require_once './view/submit.php';
-		} else {
-
-		}
-	?>	
-
 </body>
 </html>

@@ -16,7 +16,6 @@
 			// var_dump($logs);
 			if(isset($logs)){
 				redirect('../');
-				exit();
 			} else {
 				$invalid = true;
 			}
