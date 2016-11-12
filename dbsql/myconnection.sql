@@ -1,5 +1,5 @@
 -- DROPPING TABLE --
-DROP TABLE totalscore;
+DROP TABLE scoreboard;
 DROP TABLE login;
 DROP TABLE submission;
 DROP TABLE problem;
@@ -18,7 +18,7 @@ create table login (
 );
 
 CREATE TABLE problem (
-  prob_num INT PRIMARY KEY,
+  prob_num VARCHAR(2) PRIMARY KEY,
   solution_query VARCHAR2(255)
 );
 
@@ -33,7 +33,7 @@ CREATE TABLE submission (
 
 CREATE TABLE scoreboard (
   name_code CONSTRAINT sc_nc_fk REFERENCES contestant(name_code) ON DELETE CASCADE,
-  prob_num INT,
+  prob_num VARCHAR(2),
   submit_count INT,
   submit_time INT,
   time_after_penalty as (submit_time + (submit_count*8)),

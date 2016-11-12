@@ -72,7 +72,7 @@
 	<option value="sql">TXT</option>
 	<option value="" selected="selected">file format</option>
 	</select>
-	<input type="submit" name="submit" id="submit" value="submit"  onclick="return kampretos();" />
+	<input type="submit" name="submit" id="submit" value="submit"  onclick="confirm('test kampret!'');" />
 	<input type="reset" value="cancel"  />
 	</form>
 </body>
