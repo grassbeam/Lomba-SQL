@@ -32,11 +32,13 @@ CREATE TABLE submission (
 );
 
 CREATE TABLE scoreboard (
-  name_code PRIMARY KEY CONSTRAINT tots_nc_fk REFERENCES contestant(name_code) ON DELETE CASCADE,
-  prob_num INT PRIMARY KEY,
+  name_code CONSTRAINT sc_nc_fk REFERENCES contestant(name_code) ON DELETE CASCADE,
+  prob_num INT,
   submit_count INT,
-  submit_time INT, 
-  verdict INT NOT NULL
+  submit_time INT,
+  time_after_penalty as (submit_time + (submit_count*8)),
+  verdict INT NOT NULL,
+  CONSTRAINT tots_nc_pn_compokey PRIMARY KEY (name_code, prob_num)
 );
 --time in MINUTES--
 

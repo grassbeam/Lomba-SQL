@@ -27,7 +27,8 @@
 </head>
 <body>
 <script>
-	function kampretos(){
+	$("form").submit(function {
+		prevent
 		var probid = Document.getElementById('probid');
 		var valprobid = probid.option[probid.selectedIndex].value;
 		var langid = Document.getElementById('langid');
@@ -43,9 +44,13 @@
 			langid.className = "errorfield";
 		}
 
-		if(error)
+		if(error){
+			return false;
+		} else {
+			return confirm("Want to Submit?");
+		}
 
-	}
+	});
 </script>
 	<form action="./" method="POST">
 		<input type="file" name="code[]" id="maincode" required multiple />
