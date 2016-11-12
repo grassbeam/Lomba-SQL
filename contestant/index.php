@@ -17,23 +17,55 @@
 	<script type="text/javascript" src="../js/domjudge.js"></script>
 </head>
 <body>
-	<nav>
-		<div id="menutop">
-			<a href="./">home</a>
-			<a href="../auth/logout.php">logout</a>
-		</div>
-	</nav>
-	<div id="menutopright">
-		<div id="clock">
-			<span id="timeleft"></span>
-		</div>
-		<script type="text/javascript">
-			
-		</script>
-	</div>
+	<nav><div id="menutop">
+<a target="_top" href="index.php" accesskey="o"><span class="octicon octicon-home"></span> overview</a>
+<a target="_top" href="problems.php" accesskey="t"><span class="octicon octicon-book"></span> problems</a>
+</div>
 
-	<h2 id="teamwelcome">Welcome <?php if(isset($_SESSION['NAME'])) echo $_SESSION['NAME']; else "NO_NAME"; ?></h2>
+<div id="menutopright">
+<div id="clock"><span id="timeleft"></span><div id="username">logged in as <abbr title="team">Demo team user</abbr> <a href="../auth/logout.php">×</a></div></div><script type="text/javascript">
+	var initial = 1478967209;
+	var activatetime = 1195369200.000000000;
+	var starttime = 1195376400.000000000;
+	var endtime = 1195394400.000000000;
+	var offset = 0;
+	var date = new Date(initial*1000);
+	var timeleftelt = document.getElementById("timeleft");
 
+	setInterval(function(){updateClock();},1000);
+	updateClock();
+</script>
+</div></nav>
+
+<script type="text/javascript">
+<!--
+function getMainExtension(ext)
+{
+	switch(ext) {
+		case 'sql': return 'sql';
+		case 'txt': return 'txt';
+		default: return '';
+	}
+}
+
+function getProbDescription(probid)
+{
+	switch(probid) {
+		case 'A': return 'Assemble';
+		case 'B': return 'March of the Penguins';
+		case 'C': return 'Containers';
+		case 'D': return 'Youth Hostel Dorm';
+		case 'E': return 'Escape from Enemy Territory';
+		case 'F': return 'Flight Safety';
+		case 'G': return 'Summits';
+		case 'H': return 'Obfuscation';
+		case 'I': return 'Tower Parking';
+		case 'J': return 'Walk';
+		default: return '';
+	}
+}
+</script>
+<h2 id="teamwelcome">Welcome <?php if(isset($_SESSION['NAME'])) echo $_SESSION['NAME']; else "NO_NAME"; ?></h2>
 	<div class="teamscoresummary">
 		<table class="scoreboard center">
 			<colgroup><col id="scorerank" /><col id="scoreaffil" /><col id="scoreteamname" /></colgroup><colgroup><col id="scoresolv" /><col id="scoretotal" /></colgroup>
@@ -153,10 +185,9 @@
 	</select>
 	<select name="langid" id="langid">
 	<option value="sql">SQL</option>
-	<option value="sql">TXT</option>
 	<option value="" selected="selected">file format</option>
 	</select>
-	<input type="submit" name="submit" id="submit" value="submit"  onclick="checkUploadForm();" />
+	<input type="submit" name="submit" id="submit" value="submit"  onclick="return checkUploadForm();" />
 	<input type="reset" value="cancel"  />
 	<br /><span id="auxfiles"></span>
 	<input type="button" name="addfile" id="addfile" value="Add another file" onclick="addFileUpload();" disabled="false"/>
