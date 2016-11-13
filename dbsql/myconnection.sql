@@ -34,6 +34,18 @@ CREATE TABLE problem (
   solution_query VARCHAR2(255)
 );
 
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('1', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('2', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('3', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('4', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('5', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('6', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('7', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('8', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('9', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('10', 'SELECT');
+
+
 CREATE TABLE submission (
   sub_id VARCHAR(11) PRIMARY KEY,
   name_code VARCHAR(10) CONSTRAINT subm_nmc_fk REFERENCES contestant(name_code) ON DELETE CASCADE ,
@@ -63,8 +75,11 @@ CREATE TABLE time_table (
 INSERT INTO time_table (idx, start_time, end_time) VALUES ('1', TO_TIMESTAMP ('2016-11-13 06:13', 'YYYY-MM-DD HH24:MI') ,TO_TIMESTAMP ('2016-11-13 07:14', 'YYYY-MM-DD HH24:MI'));
 
 commit;
+--JANGAN LUPA COMMIT!!!!!----------------------------------------------------
 
---JANGAN LUPA COMMIT!!!!!
+
+select s.sub_id, s.prob_num, s.status, s.submit_time, p.solution_query from submission s , problem p WHERE s.prob_num = p.prob_num AND s.name_code = 'sql-001' ORDER BY s.submit_time DESC;
+truncate table submission;
 
 SELECT (select extract( day from diff )*24*60*60 +
  extract( hour from diff )*60*60 +
@@ -117,17 +132,6 @@ INSERT INTO totalscore (name_code, score) VALUES('sql-04', 70);
 INSERT INTO totalscore (name_code, score) VALUES('sql-05', 60);
 INSERT INTO totalscore (name_code, score) VALUES('sql-06', 50);
 
-INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('1', 'SELECT');
-INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('2', 'SELECT');
-INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('3', 'SELECT');
-INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('4', 'SELECT');
-INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('5', 'SELECT');
-INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('6', 'SELECT');
-INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('7', 'SELECT');
-INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('8', 'SELECT');
-INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('9', 'SELECT');
-INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('10', 'SELECT');
-
 
 SELECT c.name_code, c.name, c.school, t.score FROM contestant c, totalscore t WHERE c.name_code = t.name_code ORDER BY t.score DESC;
 commit;
@@ -157,6 +161,7 @@ select extract( day from diff )*24*60*60 +
 SELECT * FROM login;
 SELECT * FROM contestant;
 SELECT * FROM submission;
+SELECT * FROM problem;
 select * from time_table;
 SELECT TO_CHAR(start_time, 'DD-MON-YYYY HH24:MI:SS') FROM time_table;
 SELECT TO_char(start_time - end_time, 'HH24:MI') from time_table;
