@@ -10,6 +10,34 @@
 
 		}
 
+		function getProbnum(){
+			$this->check_connection();
+			$query = "SELECT * FROM problem";
+			$result = $this->select($query);
+			
+			$ress = array(array());
+			$count =0 ;
+			while(($row = oci_fetch_assoc($result)) != false ){
+				$ress[$count] = $row;
+				$count++;
+			}
+			$nrows = $count;
+			if ($nrows > 0) {
+			    return $ress;
+			} else {
+			    return NULL;
+			}
+		}
+
+		function insertScoreboard($name_code, $probnumarr){
+			$this->check_connection();
+
+			foreach ($probnumarr as $probnum) {
+				$query = "INSERT INTO scoreboard (name_code, prob_num, submit_count, submit_time, verdict) VALUES ('" . $namecode . "', '" . $probnum . "', '0', '0')";
+				
+			}
+		}
+
 
 		function importUser($arr){
 			$ress = array(array());
@@ -64,10 +92,17 @@
 								$query = "ALTER user " . $uname . " quota 50m on users";
 								$altuser = $this->alterUser($query);
 								if($altuser >0){
-									$stat = 1;
+									$stat = -104;
+									$ress = $this->getProbnum();
+									if(isset($ress)){
+										//Writing Scoreboard
+									} else {
+
+									}
 								}
 							}
 						}
+
 						$resrow['STATUS'] = $stat;
 						$resrow['NAME'] = $row['NAME'];
 						$resrow['SCHOOL'] = $row['SCHOOL'];
