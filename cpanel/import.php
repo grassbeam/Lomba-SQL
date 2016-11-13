@@ -101,6 +101,9 @@ if(isset($_POST['const'])) {
                              echo "style='background-color: #ff3333;'" ;
                              $statoe = "Failed to ALTER USER QUOTA";
                              break;
+                        case -104:
+                            echo "style='background-color: #ff3333;'" ;
+                             $statoe = "Failed to INSERT USER SCOREBOARD";
                         default:
                              echo "style='background-color: #40ff00;'" ;
                             break;

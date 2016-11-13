@@ -31,10 +31,19 @@
 
 		function insertScoreboard($name_code, $probnumarr){
 			$this->check_connection();
-
+			$flagnoins = false;
 			foreach ($probnumarr as $probnum) {
-				$query = "INSERT INTO scoreboard (name_code, prob_num, submit_count, submit_time, verdict) VALUES ('" . $namecode . "', '" . $probnum . "', '0', '0')";
-				
+				// var_dump($probnum);
+				$query = "INSERT INTO scoreboard (name_code, prob_num, submit_count, submit_time, verdict) VALUES ('" . $name_code . "', '" . $probnum['PROB_NUM'] . "', '0', '0', '3')";
+				$result = $this->insertUser($query);
+				if(!$result > 0){
+					$flagnoins = true;
+				}
+			}
+			if($flagnoins) {
+				return 0;
+			} else {
+				return 1;
 			}
 		}
 
@@ -93,11 +102,13 @@
 								$altuser = $this->alterUser($query);
 								if($altuser >0){
 									$stat = -104;
-									$ress = $this->getProbnum();
-									if(isset($ress)){
+									$probnumarrs = $this->getProbnum();
+									if(isset($probnumarrs)){
 										//Writing Scoreboard
-									} else {
-
+										$resins = $this->insertScoreboard($namecode, $probnumarrs);
+										if($resins >0){
+											$stat = $resins;
+										}
 									}
 								}
 							}

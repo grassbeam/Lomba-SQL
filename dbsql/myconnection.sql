@@ -161,6 +161,10 @@ select extract( day from diff )*24*60*60 +
 SELECT * FROM login;
 SELECT * FROM contestant;
 SELECT * FROM submission;
+SELECT * FROM scoreboard WHERE name_code = 'sql-001';
+SELECT SUM(time_after_penalty) total_score FROM scoreboard WHERE name_code = 'sql-001';
+SELECT SUBMIT_COUNT, TIME_AFTER_PENALTY FROM scoreboard WHERE name_code = 'sql-001' AND prob_num = '1';
+SELECT COUNT(*) total_submit FROM scoreboard WHERE name_code = 'sql-001' AND verdict = '1';
 SELECT * FROM problem;
 select * from time_table;
 SELECT TO_CHAR(start_time, 'DD-MON-YYYY HH24:MI:SS') FROM time_table;

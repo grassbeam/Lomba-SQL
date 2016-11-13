@@ -5,6 +5,7 @@
 	require_once '../utility/connection.php';
 	require_once '../utility/utility.php';
 	require_once '../model/submits.php';
+	require_once '../model/scoreboard-oracle.php';
 	$hidvalform = $_SESSION['NAME_CODE'];
 	$DBSUBS = new DB_SUBMIT();
 	$submitlist = $DBSUBS->getSubmission($hidvalform);
@@ -15,6 +16,15 @@
 	$starttime = "1478982205.000000000"; // select from db later
 	$endtime = "1478992205.000000000"; // select from db later
 	$timernow = strtotime("now");
+	$DBSBO = new SBO();
+	$SBdetail = $DBSBO->getContestantDetail($hidvalform);
+	$totalscore = $DBSBO->getTotalScore($hidvalform);
+	$totalac = $DBSBO->getTotalAC($hidvalform);
+	$probSums = $DBSBO->getProbnum();
+	if(!isset($SBdetail) || !isset($probSums) ){
+		die('<h1>ERROR DATABASE</h1>');
+		exit();
+	}
 ?>
 
 <!DOCTYPE html>
@@ -118,12 +128,6 @@ function getProbDescription(probid)
 					<th title="problem 'Super Sum'" scope="col">
 						J <div class="circle" style="background: #ff3000;"></div>
 					</th>
-					<th title="problem '2-ME Set'" scope="col">
-						K <div class="circle" style="background: #ff0030;"></div>
-					</th>
-					<th title="problem 'Tale of A Happy Man'" scope="col">
-						L <div class="circle" style="background: #00ff30;"></div>
-					</th>
 					<!--END OF PROBLEM LIST-->
 				</tr>
 			</thead>
@@ -137,20 +141,36 @@ function getProbDescription(probid)
 							<td class="scoretn">
 								<?php if(isset($_SESSION['NAME'])) echo $_SESSION['NAME']; else "NO_NAME"; ?> <br /><span class="univ"><?php if(isset($_SESSION['SCHOOL'])) echo $_SESSION['SCHOOL']; else "UNKNOWN"; ?></span>
 							</td>
-							<td class="scorenc">12</td> <!--Total soal submited -->
-							<td class="scorett"><?php //echo $scl['score']?>100</td>
-							<td class="score_correct">3/29</td>
-							<td class="score_correct">9/191</td>
-							<td class="score_correct">3/111</td>
-							<td class="score_correct">1/39</td>
-							<td class="score_correct">1/50</td>
-							<td class="score_correct">2/275</td>
-							<td class="score_correct score_first">1/156</td>
-							<td class="score_correct score_first">3/227</td>
-							<td class="score_neutral">0</td>
-							<td class="score_neutral">0</td>
-							<td class="score_correct score_first">2/71</td>
-							<td class="score_neutral">0</td>
+							<td class="scorenc"><?php echo $totalac; ?></td> <!--Total soal submited -->
+							<td class="scorett"><?php echo $totalscore; ?></td>
+							<?php for($i=1; $i<=$probSums; $i++){ ?>
+							<td class="
+							<?php
+								switch ($SBdetail[$i]['VERDICT']) {
+								 	case '0':
+								 		echo 'score_correct';
+								 		break;
+								 	case '1':
+								 		echo 'score_incorrect';
+								 		break;
+								 	case '2':
+								 		echo 'score_incorrect';
+								 		break;
+								 	default:
+								 		echo 'score_neutral';
+								 		break;
+								 } 
+							 ?>">
+							 <?php 
+							 	if($SBdetail[$i]['VERDICT'] === 0) {
+							 		echo $SBdetail[$i]['SUBMIT_COUNT'] . "/" . $SBdetail[1]['SUBMIT_TIME'] ; 
+							 	} else {
+							 		echo $SBdetail[$i]['SUBMIT_COUNT'];
+							 	}
+							 }
+							 ?>
+							 	
+							 </td>
 						</tr>
 							<?php				
 				?>
