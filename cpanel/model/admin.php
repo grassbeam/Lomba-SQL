@@ -3,11 +3,21 @@
 
 	Class DB_USER extends Connection{
 		function getLogin($username, $password) {
-			// $this->check_connection();
-			// $username = $this->sanitize($username);
-			// $password = $this->sanitize($password);
-			// $query = "SELECT * FROM login"
-
+			$this->check_connection();
+			$cons = $this->getConn();
+			$stid = oci_parse($cons, 'SELECT * FROM login_cpanel where username = :bus');
+			oci_bind_by_name($stid, ':bus', $username);
+			oci_execute($stid);
+			$row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS);
+			oci_free_statement($stid);
+			if($row['PASSWORD'] == $password){
+				$_SESSION['ADMIN_CODE'] = $row['ADMIN_CODE'];
+				$_SESSION['NAME'] = $row['NAMA_ADMIN'];
+				// var_dump($_SESSION['SCHOOL']);
+				return true;
+			} else {
+				return NULL;
+			}
 		}
 
 		function getProbnum(){

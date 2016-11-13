@@ -3,6 +3,18 @@
 
 	Class DB_SUBMIT extends Connection{
 
+		function updateSubmission($sub_id, $newstat, $changer){
+			$this->check_connection();
+			$query = "UPDATE submission SET status = " . $newstat . ", verifier = '" . $changer . "' WHERE sub_id = '" . $sub_id . '\'';
+			// var_dump($query);
+			$result = $this->update($query);
+			if($result > 0) {
+				return $result;
+			} else {
+				return NULL;
+			}
+		}
+
 		function getSubmission($name_code) {
 			$this->check_connection();
 
@@ -21,9 +33,77 @@
 			} else {
 			    return NULL;
 			}
+		}
 
+		function getDetail($sub_id){
+			$this->check_connection();
+
+			$query = "SELECT * FROM submission WHERE sub_id = '" . $sub_id . "'";
+			$result = $this->select($query);
+			
+			$ress = array(array());
+			$count =0 ;
+			$row = oci_fetch_assoc($result);
+			$nrows = count($row);
+			if ($nrows > 0) {
+			    return $row;
+			} else {
+			    return NULL;
+			}
+		}
+
+		function getAllPending(){
+			$this->check_connection();
+
+			$query = "SELECT s.*, c.name FROM submission s, contestant c WHERE s.name_code = c.name_code AND status = '3'";
+			$result = $this->select($query);
+			
+			$ress = array(array());
+			$count =0 ;
+			while(($row = oci_fetch_assoc($result)) != false ){
+				$ress[$count] = $row;
+				$count++;
+			}
+			$nrows = $count;
+			return $ress;
 
 		}
+
+		function getAllManual(){
+			$this->check_connection();
+
+			$query = "SELECT s.*, c.name FROM submission s, contestant c WHERE s.name_code = c.name_code AND status = '999'";
+			$result = $this->select($query);
+			
+			$ress = array(array());
+			$count =0 ;
+			while(($row = oci_fetch_assoc($result)) != false ){
+				$ress[$count] = $row;
+				$count++;
+			}
+			$nrows = $count;
+			return $ress;
+
+		}
+
+		function getAllConfirmed(){
+			$this->check_connection();
+
+			$query = "SELECT s.*, c.name FROM submission s, contestant c WHERE s.name_code = c.name_code AND status != '999' AND status != '3'";
+			$result = $this->select($query);
+			
+			$ress = array(array());
+			$count =0 ;
+			while(($row = oci_fetch_assoc($result)) != false ){
+				$ress[$count] = $row;
+				$count++;
+			}
+			$nrows = $count;
+			return $ress;
+
+		}
+
+
 
 		function generateCode($probnum, $name_code) {
 			$this->check_connection();
@@ -77,13 +157,16 @@
 			} 
 			$submit_time = $timesubmits;
 			$cons = $this->getConn();
-			$stid = oci_parse($cons, "INSERT INTO submission (sub_id, name_code, submitted_text, prob_num, status, submit_time) VALUES ( :subid , :nc , :trgtfl , :prob , :statdef , :sbmt )");
+			$stid = oci_parse($cons, "INSERT INTO submission (sub_id, name_code, submitted_text, prob_num, status, submit_time, verifier) VALUES ( :subid , :nc , :trgtfl , :prob , :statdef , :sbmt, :vrf )");
 			oci_bind_by_name($stid, ':subid', $sub_id);
 			oci_bind_by_name($stid, ':nc', $name_code);
-			oci_bind_by_name($stid, ':trgtfl', $probnum);
+			oci_bind_by_name($stid, ':trgtfl', $targetfile);
 			oci_bind_by_name($stid, ':prob', $probnum);
 			oci_bind_by_name($stid, ':statdef', $defaultstat);
 			oci_bind_by_name($stid, ':sbmt', $submit_time );
+			$verifier = "hobert_machines";
+			oci_bind_by_name($stid, ':vrf', $verifier);
+
 			
 			oci_execute($stid);
 			$nr = oci_num_rows($stid);

@@ -52,8 +52,11 @@ CREATE TABLE submission (
   submitted_text VARCHAR2(255) NOT NULL,
   prob_num VARCHAR2(2) NOT NULL CONSTRAINT subm_submtd_fk REFERENCES problem(prob_num),
   status INT NOT NULL, 
-  submit_time INT NOT NULL
+  submit_time INT NOT NULL,
+  verifier VARCHAR(50)
 );
+
+
 --SUBMIT TIME IN SECONDS----
 CREATE TABLE scoreboard (
   name_code CONSTRAINT sc_nc_fk REFERENCES contestant(name_code) ON DELETE CASCADE,
@@ -72,7 +75,7 @@ CREATE TABLE time_table (
   end_time TIMESTAMP NOT NULL
 );
 
-INSERT INTO time_table (idx, start_time, end_time) VALUES ('1', TO_TIMESTAMP ('2016-11-13 06:13', 'YYYY-MM-DD HH24:MI') ,TO_TIMESTAMP ('2016-11-13 07:14', 'YYYY-MM-DD HH24:MI'));
+INSERT INTO time_table (idx, start_time, end_time) VALUES ('1', TO_TIMESTAMP ('2016-11-14 00:40', 'YYYY-MM-DD HH24:MI') ,TO_TIMESTAMP ('2016-11-14 07:14', 'YYYY-MM-DD HH24:MI'));
 
 commit;
 --JANGAN LUPA COMMIT!!!!!----------------------------------------------------
@@ -158,9 +161,13 @@ select extract( day from diff )*24*60*60 +
   round(extract( second from diff )) total_SECONDS
   from (select systimestamp - start_time diff from time_table);
 
+
+SELECT s.*, c.name FROM submission s, contestant c WHERE s.name_code = c.name_code AND status = '3';
 SELECT * FROM login;
+SELECT * FROM time_table;
 SELECT * FROM contestant;
 SELECT * FROM submission;
+UPDATE submission SET status = 3 WHERE sub_id = 'ac3be0c473c';
 SELECT * FROM scoreboard WHERE name_code = 'sql-001';
 SELECT SUM(time_after_penalty) total_score FROM scoreboard WHERE name_code = 'sql-001';
 SELECT SUBMIT_COUNT, TIME_AFTER_PENALTY FROM scoreboard WHERE name_code = 'sql-001' AND prob_num = '1';

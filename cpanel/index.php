@@ -27,14 +27,16 @@
 	<nav>
 		<div id="menutop">
 			<a href="./">home</a>
-			<?php if (!isset($_SESSION['login-id'])) {
+			<?php if (!isset($_SESSION['ADMIN_CODE'])) {
 				?>
-				<a href="login.php/">login</a>
+				<a href="login.php">login</a>
 			<?php } else {
 				?>
-				<a href="submission.php/">submission</a>
-				<a href="import.php/">import user</a>
-				<a href="logout.php/">logout</a>
+
+				<a target="_top" href="index.php" accesskey="o"><span class="octicon octicon-home"></span> overview</a>
+				<a target="_top" href="submissions.php" accesskey="s"><span class="octicon octicon-book"></span> submissions</a>
+				<a href="import.php">import user</a>
+				<a href="logout.php">logout</a>
 				<?php
 			}
 			?>
@@ -57,6 +59,7 @@
 		</script>
 	</div>
 	
+	<?php //////////// SCOREBOARD ///////////////////?>
 
 </body>
 </html>

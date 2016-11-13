@@ -84,6 +84,19 @@
 			}
 		}
 
+		function update($query) {
+			$this->check_connection();
+			$stmt = oci_parse($this->conn, $query);
+			oci_execute($stmt);
+			$nr = oci_num_rows($stmt);
+			oci_free_statement($stmt);
+			if($nr>0){
+				return $nr;
+			} else {
+				return -99;
+			}
+		}
+
 		function insertLogin($query){
 			$this->check_connection();
 			$stmt = oci_parse($this->conn, $query);

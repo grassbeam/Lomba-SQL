@@ -1,5 +1,30 @@
 <?php
-	
+	session_start();
+	define('BASE', 'BASE');
+	require_once '../utility/config.php';
+	require_once '../utility/connection.php';
+	require_once '../utility/utility.php';
+	require_once './model/admin.php';
+	if(isset($_POST['cmd'])) {
+		// die('MASUK SINI NIH....');
+		$username = $_POST['login'];
+		$password = $_POST['passwd'];
+		if($username === "" || $password === "") {
+			$empty = true;
+		} else {
+			// var_dump("MULAI MASUK DB");
+			$DBUSER = new DB_USER();
+			$logs = $DBUSER->getLogin($username, $password);
+			// var_dump($logs);
+			if(isset($logs)){
+				redirect('index.php');
+			} else {
+				$invalid = true;
+			}
+		}
+	}
+
+
 
 ?>
 
@@ -21,7 +46,7 @@
 Please supply your credentials below, or contact a staff member for assistance.
 </p>
 
-<form action="./login.php" method="post">
+<form action="login.php" method="post">
 	<input type="hidden" name="cmd" value="login" />
 	<table>
 		<tr>
