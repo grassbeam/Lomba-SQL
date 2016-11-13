@@ -4,7 +4,17 @@
 	require_once '../utility/config.php';
 	require_once '../utility/connection.php';
 	require_once '../utility/utility.php';
-	
+	require_once '../model/submits.php';
+	$hidvalform = $_SESSION['NAME_CODE'];
+	$DBSUBS = new DB_SUBMIT();
+	$submitlist = $DBSUBS->getSubmission($hidvalform);
+	$kosong = true;
+	if(isset($submitlist)){
+		$kosong = false;
+	}
+	$starttime = "1478982205.000000000"; // select from db later
+	$endtime = "1478992205.000000000"; // select from db later
+	$timernow = strtotime("now");
 ?>
 
 <!DOCTYPE html>
@@ -15,19 +25,19 @@
 	<link rel="stylesheet" href="../css/style.css">
 	<script type="text/javascript" src="../js/jquery.min.js"></script>
 	<script type="text/javascript" src="../js/domjudge.js"></script>
-</head>
-<body>
+</Contestant y>
 	<nav><div id="menutop">
 <a target="_top" href="index.php" accesskey="o"><span class="octicon octicon-home"></span> overview</a>
 <a target="_top" href="problems.php" accesskey="t"><span class="octicon octicon-book"></span> problems</a>
 </div>
 
 <div id="menutopright">
-<div id="clock"><span id="timeleft"></span><div id="username">logged in as <abbr title="team">Demo team user</abbr> <a href="../auth/logout.php">×</a></div></div><script type="text/javascript">
-	var initial = 1478967209;
+<div id="clock"><span id="timeleft"></span><div id="username">logged in as <abbr title="team">Contestant user</abbr> <a href="../auth/logout.php">×</a></div></div>
+<script type="text/javascript">
+	var initial = <?php echo $timernow;?>;
 	var activatetime = 1195369200.000000000;
-	var starttime = 1195376400.000000000;
-	var endtime = 1195394400.000000000;
+	var starttime = <?php echo $starttime;?> ;
+	var endtime = <?php echo $endtime;?> ;
 	var offset = 0;
 	var date = new Date(initial*1000);
 	var timeleftelt = document.getElementById("timeleft");
@@ -168,8 +178,8 @@ function getProbDescription(probid)
 	</script>
 	<form style="display:inline;" action="upload.php" method="post" enctype="multipart/form-data" onreset="resetUploadForm(30, 100);">
 	<p id="submitform">
-
-	<input type="file" name="code[]" id="maincode" required multiple />
+	<input type="hidden" name="nc" value="<?php echo $hidvalform; ?>">
+	<input type="file" name="maincode" id="maincode" required multiple />
 	<select name="probid" id="probid">
 	<option value="1">A</option>
 	<option value="2">B</option>
@@ -195,6 +205,63 @@ function getProbDescription(probid)
 
 	</p>
 	</form>
+
+	<table class="list sortable submissions">
+<thead>
+<tr><th scope="col">time</th><th scope="col">problem</th><th scope="col">file</th><th scope="col">result</th></tr>
+</thead>
+<tbody>
+<?php
+	if(!$kosong){
+
+	$counter = 1;
+	foreach ($submitlist as $row) {
+		
+?>
+	<tr class="<?php if($counter %2 == 0) echo "roweven "; else echo "rowodd "?>unseen" data-team-id="<?php echo $row['NAME_CODE'];?>" data-problem-id="<?php echo $row['PROB_NUM'];?>" data-language-id="sql" data-submission-id="<?php echo $row['SUB_ID'];?>">
+		<td>
+			<a>
+			<?php
+				$tot = $row['SUBMIT_TIME'];
+				$sec = $tot % 60;
+				$min = ($tot - $sec) / 60;
+				echo sprintf("%02d:%02d", $min,$sec);
+			?>
+			</a>
+		</td>
+		<td class="probid" title="<?php echo $row['SOLUTION_QUERY'];?>"><a><?php echo $row['PROB_NUM'];?></a></td>
+		<td class="langid" title="SQL"><a>SQL</a></td>
+		<td class="result">
+		<a><span class="sol 
+		<?php
+			switch ($row['STATUS']) {
+				case '0':
+					echo 'sol_correct">correct';
+					break;
+				case '1':
+					echo 'sol_incorrect">wrong-answer';
+					break;
+				case '2':
+					echo 'sol_incorrect">syntax-error';
+					break;
+				case '666':
+					echo 'sol_queued">too-late';
+					break; 
+				default:
+					echo 'sol_queued">pending...';
+					break;
+			}
+		?>
+		</span></a></td>
+	</tr>
+<?php
+	$counter++;
+		}
+	}
+?>
+</tbody>
+</table>
+
 
 
 	</div>

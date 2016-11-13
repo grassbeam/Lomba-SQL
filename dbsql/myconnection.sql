@@ -1,5 +1,7 @@
 -- DROPPING TABLE --
+DROP TABLE time_table;
 DROP TABLE scoreboard;
+DROP TABLE login_cpanel;
 DROP TABLE login;
 DROP TABLE submission;
 DROP TABLE problem;
@@ -10,6 +12,16 @@ create table contestant (
   name VARCHAR(50) NOT NULL,
   school VARCHAR(50) NOT NULL
 );
+
+create table login_cpanel (
+  username VARCHAR(25) PRIMARY KEY,
+  password VARCHAR(25),
+  nama_admin VARCHAR(50),
+  admin_code VARCHAR(10)
+);
+
+INSERT INTO login_cpanel VALUES('leopisangg', 'kampretos666', 'PisanGG','adm01');
+INSERT INTO login_cpanel VALUES('hobert', 'kampretos666', 'Hobert','adm02');
 
 create table login (
   username VARCHAR(15) PRIMARY KEY,
@@ -25,12 +37,12 @@ CREATE TABLE problem (
 CREATE TABLE submission (
   sub_id VARCHAR(11) PRIMARY KEY,
   name_code VARCHAR(10) CONSTRAINT subm_nmc_fk REFERENCES contestant(name_code) ON DELETE CASCADE ,
-  submitted_text VARCHAR2(4000) NOT NULL,
+  submitted_text VARCHAR2(255) NOT NULL,
   prob_num VARCHAR2(2) NOT NULL CONSTRAINT subm_submtd_fk REFERENCES problem(prob_num),
   status INT NOT NULL, 
-  submit_time TIMESTAMP NOT NULL
+  submit_time INT NOT NULL
 );
-
+--SUBMIT TIME IN SECONDS----
 CREATE TABLE scoreboard (
   name_code CONSTRAINT sc_nc_fk REFERENCES contestant(name_code) ON DELETE CASCADE,
   prob_num VARCHAR(2),
@@ -41,6 +53,51 @@ CREATE TABLE scoreboard (
   CONSTRAINT tots_nc_pn_compokey PRIMARY KEY (name_code, prob_num)
 );
 --time in MINUTES--
+
+CREATE TABLE time_table (
+  idx INT PRIMARY KEY,
+  start_time TIMESTAMP NOT NULL,
+  end_time TIMESTAMP NOT NULL
+);
+
+INSERT INTO time_table (idx, start_time, end_time) VALUES ('1', TO_TIMESTAMP ('2016-11-13 06:13', 'YYYY-MM-DD HH24:MI') ,TO_TIMESTAMP ('2016-11-13 07:14', 'YYYY-MM-DD HH24:MI'));
+
+commit;
+
+--JANGAN LUPA COMMIT!!!!!
+
+SELECT (select extract( day from diff )*24*60*60 +
+ extract( hour from diff )*60*60 +
+  extract( minute from diff ) *60+
+  round(extract( second from diff )) total_SECONDS
+  from (select systimestamp - end_time diff from time_table)) CHECKER, (select extract( day from diff )*24*60*60 +
+ extract( hour from diff )*60*60 +
+  extract( minute from diff ) *60+
+  round(extract( second from diff )) total_SECONDS
+  from (select systimestamp - start_time diff from time_table)) DIFF FROM dual;
+  
+  select extract( day from diff )*24*60*60 +
+ extract( hour from diff )*60*60 +
+  extract( minute from diff ) *60+
+  round(extract( second from diff )) total_SECONDS
+  from (select systimestamp - end_time diff from time_table)
+
+select extract( day from diff )*24*60 +
+ extract( hour from diff )*60 +
+  extract( minute from diff ) total_MINUTES
+  from (select systimestamp - start_time diff from time_table);
+
+
+select systimestamp - start_time from time_table;
+TRUNCATE TABLE time_table;
+INSERT INTO time_table (idx, start_time, end_time) VALUES ('1', TO_TIMESTAMP ('2016-11-13 04:12', 'YYYY-MM-DD HH24:MI') ,TO_TIMESTAMP ('2016-11-13 05:05', 'YYYY-MM-DD HH24:MI'));
+commit;
+select (24*60*60*(end_time - start_time)) as KAMPRET from time_table;
+
+INSERT INTO submission (sub_id, name_code, submitted_text, prob_num, status, submit_time) VALUES ('asd123', 'sql-001', 'e:/asem', '1' ,'3' , '');
+COMMIT;  
+INSERT INTO time_table (idx, start_time, end_time) VALUES ('1', TO_TIMESTAMP ('2016-11-13 05:58', 'YYYY-MM-DD HH24:MI') ,TO_TIMESTAMP ('2016-11-13 06:58', 'YYYY-MM-DD HH24:MI'));
+select (24*60*60*(end_time - start_time)) as KAMPRET from time_table;
 
 --SELECT t.username FROM DBA_USERS t WHERE t.username LIKE 's%';
 drop USER sqluntar001;
@@ -60,16 +117,16 @@ INSERT INTO totalscore (name_code, score) VALUES('sql-04', 70);
 INSERT INTO totalscore (name_code, score) VALUES('sql-05', 60);
 INSERT INTO totalscore (name_code, score) VALUES('sql-06', 50);
 
-INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('1', "SELECT ID_PESERTA AS 'ID', NAMA AS 'NAMA PESERTA' FROM PESERTA WHERE NAMA LIKE 'B%' OR NAMA LIKE '%S';");
-INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('2', "SELECT M.MATA_PELAJARAN AS 'MATA PELAJARAN', G.JURUSAN AS 'JURUSAN' FROM PELAJARAN M, PENGAJAR G, KELAS K WHERE K.ID_PENGAJAR = G.ID_PENGAJAR AND K.KODE_P = M.KODE_P AND G.NAMA = 'KIM';");
-INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('3', "SELECT P.NAMA ||' BELUM MEMILIKI HURUF MUTU' AS 'INFORMASI' FROM PESERTA P, NILAI N WHERE N.HURUF_MUTU IS NULL AND P.ID_PESERTA = N.ID_PESERTA;");
-INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('4', "SELECT NAMA, HONOR AS 'HONOR SEBELUM DIPOTONG PPH 5%', HONOR * 0.05 AS 'PPH', HONOR - (HONOR * 0.05) AS 'HONOR YANG DITERIMA' FROM PENGAJAR ORDER BY HONOR ASC;");
-INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('5', "SELECT JURUSAN AS 'JURUSAN', MIN(HONOR) AS 'HONOR TERKECIL', AVG(HONOR) AS 'HONOR RATA-RATA', MAX(HONOR) AS 'HONOR TERBESAR' FROM PENGAJAR GROUP BY JURUSAN;");
-INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('6', "SELECT P.NAMA AS 'NAMA PENGAJAR', M.MATA_PELAJARAN AS 'MATA PELAJARAN', M.JURUSAN AS 'JURUSAN' FROM PELAJARAN M, PENGAJAR P, KELAS K WHERE K.ID_PENGAJAR = P.ID_PENGAJAR AND K.KODE_P = M.KODE_P AND K.TAHUN = '2015' AND K.SEMESTER = 'GENAP';");
-INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('7', "SELECT P.NAMA AS 'NAMA PENGAJAR', COUNT(K.KODE_P) AS 'JUMLAH KELAS' FROM PENGAJAR P, KELAS K WHERE P.ID_PENGAJAR = K.ID_PENGAJAR AND TAHUN = '2014' GROUP BY P.NAMA;');
-INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('8', "SELECT S.NAMA AS 'NAMA PESERTA', P.MATA_PELAJARAN AS 'MATA PELAJARAN', N.HURUF_MUTU AS 'NILAI MUTU' FROM PESERTA S, PELAJARAN P, NILAI N WHERE N.ID_PESERTA = S.ID_PESERTA AND N.KODE_P = P.KODE_P AND N.TAHUN = '2015' AND SEMESTER = 'GENAP' ORDER BY S.NAMA ASC;");
-INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('9', "SELECT GEDUNG AS 'GEDUNG', COUNT(RUANG) AS 'INTENSITAS PEMAKAIAN GEDUNG' FROM JADWAL WHERE SEMESTER ='GENAP' GROUP BY GEDUNG;");
-INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('10', "SELECT NAMA AS 'NAMA PENGAJAR', JURUSAN AS 'JURUSAN', HONOR AS 'HONOR' FROM PENGAJAR WHERE HONOR > (SELECT AVG(HONOR) FROM PENGAJAR);");
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('1', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('2', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('3', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('4', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('5', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('6', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('7', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('8', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('9', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('10', 'SELECT');
 
 
 SELECT c.name_code, c.name, c.school, t.score FROM contestant c, totalscore t WHERE c.name_code = t.name_code ORDER BY t.score DESC;
@@ -91,17 +148,33 @@ DROP USER kampret;
 CREATE USER kampret IDENTIFIED by "666kg";
 CREATE USER ;
 
+select extract( day from diff )*24*60*60 +
+ extract( hour from diff )*60*60 +
+  extract( minute from diff ) *60+
+  round(extract( second from diff )) total_SECONDS
+  from (select systimestamp - start_time diff from time_table);
+
 SELECT * FROM login;
 SELECT * FROM contestant;
+SELECT * FROM submission;
+select * from time_table;
+SELECT TO_CHAR(start_time, 'DD-MON-YYYY HH24:MI:SS') FROM time_table;
+SELECT TO_char(start_time - end_time, 'HH24:MI') from time_table;
+
+CREATE TABLE kampret (
+total_seconds INT PRIMARY KEY
+);
+
+INSERT INTO kampret VALUES(20);
+SELECT * from kampret;
+
 TRUNCATE TABLE contestant;
 TRUNCATE TABLE totalscore;
 DELETE FROM contestant;
 
--- DROPPING TABLE --
-DROP TABLE totalscore;
-DROP TABLE login;
-DROP TABLE submission;
-DROP TABLE problem;
-DROP TABLE contestant;
 
-CREATE USER sqluntar001 IDENTIFIED BY "4190a";
+select extract( day from diff )*24*60*60 +
+ extract( hour from diff )*60*60 +
+  extract( minute from diff ) *60+
+  round(extract( second from diff )) TOTAL_SECONDS
+  from (select systimestamp - start_time diff from time_table);

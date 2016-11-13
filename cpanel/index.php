@@ -8,6 +8,10 @@
 	// require_once '../model/scoreboard.php';
 	require_once '../model/scoreboard-oracle.php';
 	require_once './controller/scoreboard-controller.php';
+
+	$starttime = "1478982205.000000000"; // select from db later
+	$endtime = "1478992205.000000000"; // select from db later
+	$timernow = strtotime("now");
 ?>
 
 <!DOCTYPE html>
@@ -41,13 +45,18 @@
 			<span id="timeleft"></span>
 		</div>
 		<script type="text/javascript">
-			
+			var initial = <?php echo $timernow;?>;
+			var activatetime = 1195369200.000000000;
+			var starttime = <?php echo $starttime;?> ;
+			var endtime = <?php echo $endtime;?> ;
+			var offset = 0;
+			var date = new Date(initial*1000);
+			var timeleftelt = document.getElementById("timeleft");
+			setInterval(function(){updateClock();},1000);
+			updateClock();
 		</script>
 	</div>
 	
-	<?php
-		require_once '../view/scoreboard.php';
-	?>
 
 </body>
 </html>

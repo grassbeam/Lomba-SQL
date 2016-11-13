@@ -30,7 +30,7 @@
 		function insertUser($query){
 			$this->check_connection();
 			$stmt = oci_parse($this->conn, $query);
-			@oci_execute($stmt, OCI_DEFAULT);
+			@oci_execute($stmt); // KASIH OCI_DEFAULT KALO ERROR
 			$nr = oci_num_rows($stmt);
 			oci_free_statement($stmt);
 			if($nr>0){
@@ -104,6 +104,7 @@
 			oci_execute($stid);
 			return $stid;
 		}
+
 	}
 
 
