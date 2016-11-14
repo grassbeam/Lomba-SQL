@@ -13,6 +13,7 @@
 		$postedid = $_POST['subid'];
 		$namechanger = $_SESSION['NAME'];
 		$resolt = $DBSUBMIT->updateSubmission($postedid, $stat, $namechanger);
+		$DBSUBMIT->close();
 		if(isset($resolt)) {
 			alert('SUBMISSION STATUS CHANGED!!');
 			redirect('submissions.php');

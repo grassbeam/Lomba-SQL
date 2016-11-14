@@ -2,6 +2,11 @@
 	if (!defined('BASE')) die('<h1 class="try-hack">Restricted access!</h1>');
 
 	Class DB_USER extends Connection{
+
+		function close(){
+			$this->klasclos();
+		}
+
 		function getLogin($username, $password) {
 			$this->check_connection();
 			$cons = $this->getConn();
@@ -99,7 +104,7 @@
 					if($ressz2 > 0){
 						$stat = -101;
 						$query = "CREATE USER " . $uname . " IDENTIFIED BY " . $pswrd;
-						// var_dump();
+						// var_dump($query);
 						// echo "<br/>";
 						$cruser = $this->createUser($uname, $pswrd);
 						if($cruser > 0) {

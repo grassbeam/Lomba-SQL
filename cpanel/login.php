@@ -15,6 +15,7 @@
 			// var_dump("MULAI MASUK DB");
 			$DBUSER = new DB_USER();
 			$logs = $DBUSER->getLogin($username, $password);
+			$DBUSER->close();
 			// var_dump($logs);
 			if(isset($logs)){
 				redirect('index.php');

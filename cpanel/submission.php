@@ -12,6 +12,7 @@
 		}
 		$subid = $_GET['id'];
 		$subdetail = $DBSUBMIT->getDetail($subid);
+		$DBSUBMIT->close(); // CLOSE CONNECTION
 		$path = $subdetail['SUBMITTED_TEXT'];
 		$queryans = file_get_contents($path);
 		if(!isset($subdetail)) {
@@ -94,12 +95,12 @@ function confirmClar() {
 </select>
 </td></tr>
 <tr>
-<td><b><label for="bodytext">Query</label>:</b></td>
-<td><label for="bodytext" id="bodytext"><?php echo $queryans; ?></label>
+<td><b><label for="">Query</label>:</b></td>
+<td><p id="bodytext"><?php echo $queryans;?></p>
 </td></tr>
 <tr>
 <td>&nbsp;</td>
-<td><input type="submit" name="submit" id="submit" value="Send"  onclick="return confirmClar()" />
+<td><input type="submit" name="submit" id="submit" value="Send"  onclick="return confirmClar()" disabled />
 </td>
 </tr>
 </table>

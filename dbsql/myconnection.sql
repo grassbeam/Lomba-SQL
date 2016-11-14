@@ -44,6 +44,15 @@ INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('7', 'SELECT');
 INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('8', 'SELECT');
 INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('9', 'SELECT');
 INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('10', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('11', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('12', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('13', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('14', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('15', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('16', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('17', 'SELECT');
+INSERT INTO PROBLEM (PROB_NUM, SOLUTION_QUERY) VALUES ('18', 'DUMMY');
+
 
 
 CREATE TABLE submission (
@@ -60,7 +69,7 @@ CREATE TABLE submission (
 --SUBMIT TIME IN SECONDS----
 CREATE TABLE scoreboard (
   name_code CONSTRAINT sc_nc_fk REFERENCES contestant(name_code) ON DELETE CASCADE,
-  prob_num VARCHAR(2),
+  prob_num INT,
   submit_count INT,
   submit_time INT,
   time_after_penalty as (submit_time + (submit_count*8)),
@@ -78,8 +87,26 @@ CREATE TABLE time_table (
 INSERT INTO time_table (idx, start_time, end_time) VALUES ('1', TO_TIMESTAMP ('2016-11-14 00:40', 'YYYY-MM-DD HH24:MI') ,TO_TIMESTAMP ('2016-11-14 07:14', 'YYYY-MM-DD HH24:MI'));
 
 commit;
+
 --JANGAN LUPA COMMIT!!!!!----------------------------------------------------
 
+create table peserta( id_peserta varchar2(6) not null, nama varchar2(20) not null, jurusan varchar2(30) not null, total_sks number not null, primary key(id_peserta));
+create table pelajaran( kode_p varchar2(8) not null, mata_pelajaran varchar2(30) not null, jurusan varchar2(20) not null, sks number not null, primary key(kode_p));
+
+COMMIT;
+DROP USER sqluntar005 CASCADE;
+DROP CASCADE USER  sqluntar001;
+CREATE USER sqluntar001 IDENTIFIED BY 90955;
+drop user sqluntar001;
+create table sqluntar001.peserta( id_peserta varchar2(6) not null, nama varchar2(20) not null, jurusan varchar2(30) not null, total_sks number not null, primary key(id_peserta));
+
+
+SELECT c.name_code, c.name, c.school, count(verdict) verd , Sum(s.time_after_penalty) totscore FROM scoreboard s JOIN contestant c ON(s.name_code = c.name_code) WHERE s.verdict!=0 group by c.name_code, c.name, c.school ORDER BY verd asc, totscore asc;
+
+UPDATE time_table SET start_time = TO_TIMESTAMP ('2016-11-14 11:40', 'YYYY-MM-DD HH24:MI') , 
+end_time = TO_TIMESTAMP ('2016-11-14 18:14', 'YYYY-MM-DD HH24:MI');
+commit;
+select * from time_table;
 
 select s.sub_id, s.prob_num, s.status, s.submit_time, p.solution_query from submission s , problem p WHERE s.prob_num = p.prob_num AND s.name_code = 'sql-001' ORDER BY s.submit_time DESC;
 truncate table submission;
@@ -167,27 +194,42 @@ SELECT * FROM login;
 SELECT * FROM time_table;
 SELECT * FROM contestant;
 SELECT * FROM submission;
-UPDATE submission SET status = 3 WHERE sub_id = 'ac3be0c473c';
-SELECT * FROM scoreboard WHERE name_code = 'sql-001';
-SELECT SUM(time_after_penalty) total_score FROM scoreboard WHERE name_code = 'sql-001';
-SELECT SUBMIT_COUNT, TIME_AFTER_PENALTY FROM scoreboard WHERE name_code = 'sql-001' AND prob_num = '1';
+UPDATE submission SET status = 1, verifier = 'kampretos666'  WHERE sub_id = 'ac3be0c473c';
+commit;
+SELECT count(*) accepted FROM scoreboard WHERE verdict = 0 AND name_code = 'sql-001';
+SELECT c.name_code, c.name, c.school, Sum(s.time_after_penalty) totscore FROM scoreboard s JOIN contestant c ON(s.name_code = c.name_code) group by c.name_code, c.name, c.school ORDER BY totscore DESC;
+SELECT name_code, SUM(time_after_penalty),  total_score FROM scoreboard GROUP BY name_code ;
+SELECT PROB_NUM, SUBMIT_COUNT, TIME_AFTER_PENALTY FROM scoreboard WHERE name_code = 'sql-001';
+SELECT NAME_CODE, submit_count, time_after_penalty FROM scoreboard WHERE prob_num = '1' ORDER BY SUBMIT_COUNT DESC, time_after_penalty ASC;
 SELECT COUNT(*) total_submit FROM scoreboard WHERE name_code = 'sql-001' AND verdict = '1';
 SELECT * FROM problem;
 select * from time_table;
 SELECT TO_CHAR(start_time, 'DD-MON-YYYY HH24:MI:SS') FROM time_table;
 SELECT TO_char(start_time - end_time, 'HH24:MI') from time_table;
 
+desc scoreboard;
+Select * from scoreboard WHERE name_code = 'sql-001' ORDER BY prob_num asc;
+SELECT name_code, count(verdict) FROM scoreboard WHERE  ;
+SELECT c.name_code, c.name, c.school, count(verdict) verd , Sum(s.time_after_penalty) totscore FROM scoreboard s JOIN contestant c ON(s.name_code = c.name_code) WHERE s.verdict!=0 group by c.name_code, c.name, c.school ORDER BY verd asc, totscore asc;
+SELECT COALESE((select name_code, count(verdict) FROM scoreboard WHERE verdict = '3' GROUP BY name_code) ,0);
+SELECT DISTINCT * FROM scoreboard ORDER BY SUBMIT_COUNT DESC , TIME_AFTER_PENALTY ASC;
+select name_code, count(verdict) FROM scoreboard WHERE verdict = '3' GROUP BY name_code
+Select DISTINCT name_code  FROM scoreboard;
+select name_code, count(verdict) FROM scoreboard WHERE verdict = '3' GROUP BY name_code;
 CREATE TABLE kampret (
 total_seconds INT PRIMARY KEY
 );
-
+select count(*) from contestant;
+SELECT name_code, SUM(time_after_penalty) sum_time, COUNT(VERDICT) verd FROM scoreboard WHERE verdict != 0 GROUP BY name_code ORDER BY verd asc, sum_time asc;
+SELECT COUNT(*)-1 FROM problem;
 INSERT INTO kampret VALUES(20);
 SELECT * from kampret;
 
 TRUNCATE TABLE contestant;
 TRUNCATE TABLE totalscore;
 DELETE FROM contestant;
-
+Select * from scoreboard WHERE name_code = 'sql-001' ORDER BY prob_num asc;
+CREATE TABLE hobert.pesertaInsert (
 
 select extract( day from diff )*24*60*60 +
  extract( hour from diff )*60*60 +

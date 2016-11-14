@@ -7,6 +7,7 @@
 	require_once '../model/submits.php';
 	require_once '../model/scoreboard-oracle.php';
 	$hidvalform = $_SESSION['NAME_CODE'];
+	$ussr = $_SESSION['USERNAME'];
 	$DBSUBS = new DB_SUBMIT();
 	$submitlist = $DBSUBS->getSubmission($hidvalform);
 	$kosong = true;
@@ -98,37 +99,74 @@ function getProbDescription(probid)
 					<th title="team name" scope="col" colspan="2">Name</th>
 					<th title="# solved / penalty time" colspan="2" scope="col">score</th>
 					<!-- PROBLEM LIST -->
-					<th title="Problem 1" scope="col">
-						A <div class="circle" style="background: #ff0000;"></div>
-					</th>
-					<th title="Problem 2" scope="col">
-						B <div class="circle" style="background: #00ff00;"></div>
-					</th>
-					<th title="problem 'Stress Factor'" scope="col">
-						C <div class="circle" style="background: #0000ff;"></div>
-					</th>
-					<th title="problem 'Pay Day'" scope="col">
-						D <div class="circle" style="background: #ffff00;"></div>
-					</th>
-					<th title="problem 'Guessing Game'" scope="col">
-						E <div class="circle" style="background: #ff00ff;"></div>
-					</th>
-					<th title="problem 'The Cure'" scope="col">
-						F <div class="circle" style="background: #00ffff;"></div>
-					</th>
-					<th title="problem 'All Are Equal'" scope="col">
-						G <div class="circle" style="background: #ff9000;"></div>
-					</th>
-					<th title="problem 'National Disaster II'" scope="col">
-						H <div class="circle" style="background: #ff0090;"></div>
-					</th>
-					<th title="problem 'Peculiar Microwave'" scope="col">
-						I <div class="circle" style="background: #00ff90;"></div>
-					</th>
-					<th title="problem 'Super Sum'" scope="col">
-						J <div class="circle" style="background: #ff3000;"></div>
-					</th>
-					<!--END OF PROBLEM LIST-->
+				<?php for($i=0;$i<$probSums;$i++) { ?>
+				<th title="Problem <?php echo $i+1; ?>" scope="col">
+				<?php
+					$huruf = $i+1;
+					switch ($huruf) {
+					 	case '1':
+					 		?> A <div class="circle" style="background: #ff00ff;"><?php
+					 		break;
+					 	case '2':
+					 		?> B <div class="circle" style="background: #6d4ea5;"><?php
+					 		break;
+					 	case '3':
+					 		?> C <div class="circle" style="background: #8b4ec1;"><?php
+					 		break;
+					 	case '4':
+					 		?> D <div class="circle" style="background: #bea0f0;"><?php
+					 		break;
+					 	case '5':
+					 		?> E <div class="circle" style="background: #87011f;"><?php
+					 		break;
+					 	case '6':
+					 		?> F <div class="circle" style="background: #855ef9;"><?php
+					 		break;
+					 	case '7':
+					 		?> G <div class="circle" style="background: #0f077b;"><?php
+					 		break;
+					 	case '8':
+					 		?> H <div class="circle" style="background: #cc78ed;"><?php
+					 		break;
+					 	case '9':
+					 		?> I <div class="circle" style="background: #1a4c38;"><?php
+					 		break;
+					 	case '10':
+					 		?> J <div class="circle" style="background: #da6234;"><?php
+					 		break;
+					 	case '11':
+					 		?> K <div class="circle" style="background: #ff00ff;"><?php
+					 		break;
+					 	case '12':
+					 		?> L <div class="circle" style="background: #10c5e4;"><?php
+					 		break;
+					 	case '13':
+					 		?> M <div class="circle" style="background: #653b72;"><?php
+					 		break;
+					 	case '14':
+					 		?> N <div class="circle" style="background: #5ad9dc;"><?php
+					 		break;
+					 	case '15':
+					 		?> O <div class="circle" style="background: #36e57e;"><?php
+					 		break;
+					 	case '16':
+					 		?> P <div class="circle" style="background: #e0066e;"><?php
+					 		break;
+					 	case '17':
+					 		?> Q <div class="circle" style="background: #98f949;"><?php
+					 		break;
+					 	case '18':
+					 		?> R <div class="circle" style="background: #cea595;"><?php
+					 		break;
+					 	default:
+					 		?> ZZ <div class="circle" style="background: #ef30b3;"><?php
+					 		break;
+					 } 
+				?>
+				</div>
+				</th>
+				<?php } ?>
+				<!--END OF PROBLEM LIST-->
 				</tr>
 			</thead>
 
@@ -200,6 +238,7 @@ function getProbDescription(probid)
 	<form style="display:inline;" action="upload.php" method="post" enctype="multipart/form-data" onreset="resetUploadForm(30, 100);">
 	<p id="submitform">
 	<input type="hidden" name="nc" value="<?php echo $hidvalform; ?>">
+	<input type="hidden" name="us" value="<?php echo $ussr; ?>">
 	<input type="file" name="maincode" id="maincode" required multiple />
 	<select name="probid" id="probid">
 	<option value="1">A</option>

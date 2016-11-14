@@ -6,6 +6,7 @@
 	require_once '../utility/connection.php';
 	require_once '../utility/utility.php';
 	require_once './model/admin.php';
+    require_once './model/importsoal.php'
 ?>
 
 
@@ -76,6 +77,11 @@ if(isset($_POST['const'])) {
             <tbody>
 			<?php
 				foreach ($ress as $row) {
+                    $aesde = new DB_HOBERT($row['USERNAME'], $row['PASSWORD']);
+                    $resaesde = $aesde->executeAll();
+                    if(!isset($resaesde)) {
+                        $row['STATUS'] = -666;
+                    }
 				?>
 				<tr 
                     <?php 
@@ -104,6 +110,9 @@ if(isset($_POST['const'])) {
                         case -104:
                             echo "style='background-color: #ff3333;'" ;
                              $statoe = "Failed to INSERT USER SCOREBOARD";
+                        case -666:
+                            echo "style='background-color: #ff3333;'" ;
+                            $statoe = "Failed to CREATE HOBERT NEEDS DB";
                         default:
                              echo "style='background-color: #40ff00;'" ;
                             break;

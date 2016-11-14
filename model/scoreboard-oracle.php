@@ -3,6 +3,10 @@
 	
 	Class SBO extends Connection {
 
+		function close(){
+			$this->klasclos();
+		}
+
 		function getList(){
 			$this->check_connection();
 			$query = "SELECT c.name_code, c.name, c.school, t.score FROM contestant c, totalscore t WHERE c.name_code = t.name_code ORDER BY t.score DESC";
@@ -26,7 +30,7 @@
 
 		function getProbnum(){
 			$this->check_connection();
-			$query = "SELECT COUNT(*) KAMPRETOS FROM problem";
+			$query = "SELECT (COUNT(*)-1) KAMPRETOS FROM problem";
 			$result = $this->select($query);
 			
 			$ress = array(array());

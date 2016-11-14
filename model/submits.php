@@ -3,6 +3,10 @@
 
 	Class DB_SUBMIT extends Connection{
 
+		function close(){
+			$this->klasclos();
+		}
+
 		function updateSubmission($sub_id, $newstat, $changer){
 			$this->check_connection();
 			$query = "UPDATE submission SET status = " . $newstat . ", verifier = '" . $changer . "' WHERE sub_id = '" . $sub_id . '\'';

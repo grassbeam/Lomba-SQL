@@ -4,5 +4,7 @@
 	
 	// $scoreboard = new SB();
 	$scoreboard = new SBO();
-	$sblist = $scoreboard->getList();
+	$sblist = $scoreboard->getContestantRank();
+	$probnum = $scoreboard->getSumProb();
+	// 
 ?>

@@ -22,15 +22,17 @@
 		}
 
 		function commit(){
-			$this->check_connection();
+		}
 
+		function klasclos(){
+			oci_close($this->conn);
 		}
 
 		//INSERT NEW USER//
 		function insertUser($query){
 			$this->check_connection();
 			$stmt = oci_parse($this->conn, $query);
-			@oci_execute($stmt); // KASIH OCI_DEFAULT KALO ERROR
+			@oci_execute($stmt, OCI_DEFAULT); // KASIH OCI_DEFAULT KALO ERROR
 			$nr = oci_num_rows($stmt);
 			oci_free_statement($stmt);
 			if($nr>0){
@@ -55,7 +57,7 @@
 
 		function createUser($username, $password){
 			$this->check_connection();
-			$query = "DROP USER " . $username ;
+			$query = "DROP USER " . $username . " CASCADE";
 			$stmt = oci_parse($this->conn, $query);
 			// var_dump($query);
 			@oci_execute($stmt);
@@ -81,6 +83,18 @@
 				return 1;
 			} else {
 				return 0;
+			}
+		}
+
+		function createTable($query){
+			$this->check_connection();
+			$stmt = oci_parse($this->conn, $query);
+			$r = oci_execute($stmt);
+			oci_free_statement($r);
+			if($r) {
+				return 777;
+			} else {
+				return NULL;
 			}
 		}
 

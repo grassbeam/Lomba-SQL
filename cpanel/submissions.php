@@ -9,6 +9,7 @@
 	$pendings = $DBSUBMIT->getAllPending();
 	$special = $DBSUBMIT->getAllManual();
 	$confirmed = $DBSUBMIT->getAllConfirmed();
+	$DBSUBMIT->close();
 	if(!isset($pendings) || !isset($special) || !isset($confirmed)) {
 		die("<h1>ERROR DATABASE!</h1>");
 	}

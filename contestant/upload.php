@@ -11,6 +11,7 @@
 	if(isset($_POST['submit'])){
 		$name_code = $_POST['nc'];
 		$probnum = $_POST['probid'];
+		$username = $_POST['us'];
 		if(isset($_FILES['maincode'])){
 			// echo "<br/> MASUKKKKK <br/>";
 			// print_r($_FILES['maincode']);
@@ -29,7 +30,7 @@
 				$sbmtime = $times['DIFF'];
 			}
 			$target_dir = 'C:/jawaban/' . $name_code . "/";
-			$name_file = $sub_id . "_" . $name_code . "_" . $probnum . "_" . $sbmtime . ".sql";
+			$name_file = $sub_id . "_" . $name_code . "_" . $username . "_" . $probnum . "_" . $sbmtime . ".sql";
 			$target_file = $target_dir . $name_file;
 			if(!file_exists($target_file)) {
 				//check time + write submission
