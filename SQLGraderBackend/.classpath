@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="commons-lang3-3.5.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/SQLGraderBackend/commons-lang3-3.5-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="jsqlparser-0.7.0.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="http://jsqlparser.sourceforge.net/docs/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="mysql-connector-java-5.1.40-bin.jar"/>
+	<classpathentry kind="lib" path="ojdbc7.jar"/>
+	<classpathentry kind="lib" path="SQLGraderBackend.jar"/>
+	<classpathentry kind="lib" path="ucp.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/hobert/workspace/SQLGraderBackend/jsqlparser-0.7.0.jar"/>
+	<classpathentry kind="lib" path="src/antlr/antlr-4.5.3-complete.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
