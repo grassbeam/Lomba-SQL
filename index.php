@@ -42,5 +42,23 @@
 			
 		</script>
 	</div>
+	<br>
+	
+	<div>
+	  
+	</div>
+
+	<div>
+		<div style="margin-left:auto;margin-right:auto;">
+			<p>
+				<img src="./images/logo.png" alt="COMP_LOGO" title="COMP_LOGO" align="middle" />
+			</p>
+		</div>
+		<br>
+		<div style="margin-left:auto;margin-right:auto;">
+			<img src="./images/logoSI.png" alt="FTI_UNTAR" title="FTI_UNTAR" align="middle" />
+		</div>
+	</div>
+
 </body>
 </html>

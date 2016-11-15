@@ -13,8 +13,10 @@
 		} else {
 			$DBUSER = new DB_USER();
 			$logs = $DBUSER->getLogin($username, $password);
+			$DBUSER->close();
 			// var_dump($logs);
 			if(isset($logs)){
+				//echo "<script>console.log('masuk loh');</script>";
 				redirect('../');
 			} else {
 				$invalid = true;
@@ -31,9 +33,9 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Scoreboard</title>
-	<link rel="stylesheet" href="./css/style.css">
-	<script type="text/javascript" src="./js/jquery.min.js"></script>
-	<script type="text/javascript" src="./js/domjudge.js"></script>
+	<link rel="stylesheet" href="../css/style.css">
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/domjudge.js"></script>
 </head>
 <body>
 	<h1>Not Authenticated</h1>

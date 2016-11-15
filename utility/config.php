@@ -12,7 +12,7 @@
 	//konfig koneksi ORACLE database 
 	define('DBSTRINGCON', 'localhost/XE');
 	define('DBUSER2', 'system');
-	define('DBPASS2', 'oracle');
+	define('DBPASS2', 'SQLc2016untar');
 
 	
 ?>

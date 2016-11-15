@@ -6,22 +6,60 @@
 	require_once '../utility/utility.php';
 	require_once '../model/submits.php';
 	require_once '../model/scoreboard-oracle.php';
+	require_once '../model/timer.php';
+
 	$hidvalform = $_SESSION['NAME_CODE'];
 	$ussr = $_SESSION['USERNAME'];
+	
 	$DBSUBS = new DB_SUBMIT();
+	$TIMER = new TIMER();
+
 	$submitlist = $DBSUBS->getSubmission($hidvalform);
 	$kosong = true;
 	if(isset($submitlist)){
 		$kosong = false;
 	}
 	$starttime = "1478982205.000000000"; // select from db later
-	$endtime = "1478992205.000000000"; // select from db later
+	$endtime = "1478992277.000000000"; // select from db later
+	$activatetime = "147892105.000000000";
 	$timernow = strtotime("now");
+	$stm = $TIMER->getStart();
+	$etm = $TIMER->getEnd();
+	$atm = $TIMER->getActivate();
+	$itm = $TIMER->getInit();
+
+
+	
+
+	$TIMER->close();
+	if(isset($stm)) {
+		$stm = strtotime($stm);
+		$starttime = $stm;
+	}
+	if(isset($etm)) {
+		$etm = strtotime($etm);	
+		$endtime = $etm;
+	}
+	if(isset($atm)) {
+		$atm = strtotime($atm);
+		$activatetime = $atm;
+	}
+	if(isset($itm)) {
+		$timernow = $itm;
+	}
+
+	$isstart = false;
+	if($starttime < $timernow){
+		$isstart = true;
+	}
+
 	$DBSBO = new SBO();
 	$SBdetail = $DBSBO->getContestantDetail($hidvalform);
 	$totalscore = $DBSBO->getTotalScore($hidvalform);
 	$totalac = $DBSBO->getTotalAC($hidvalform);
 	$probSums = $DBSBO->getProbnum();
+
+	$DBSBO->close();
 	if(!isset($SBdetail) || !isset($probSums) ){
 		die('<h1>ERROR DATABASE</h1>');
 		exit();
@@ -34,22 +72,23 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<link rel="stylesheet" href="../css/style.css">
-	<link rel="stylesheet" href="../css/octicons.css">
 	<script type="text/javascript" src="../js/jquery.min.js"></script>
 	<script type="text/javascript" src="../js/domjudge.js"></script>
-</Contestant y>
-	<nav><div id="menutop">
-<a target="_top" href="index.php" accesskey="o"><span class="octicon octicon-home"></span> overview</a>
-<a target="_top" href="problems.php" accesskey="t"><span class="octicon octicon-book"></span> problems</a>
-</div>
+</head>
+<body>
+	<nav>
+	<div id="menutop">
+		<a target="_top" href="index.php" accesskey="o"><span class="octicon octicon-home"></span> overview</a>
+		<a target="_top" href="problems.php" accesskey="t"><span class="octicon octicon-book"></span> problems</a>
+	</div>
 
 <div id="menutopright">
 <div id="clock"><span id="timeleft"></span><div id="username">logged in as <abbr title="team">Contestant user</abbr> <a href="../auth/logout.php">×</a></div></div>
 <script type="text/javascript">
 	var initial = <?php echo $timernow;?>;
-	var activatetime = 1195369200.000000000;
-	var starttime = <?php echo $starttime;?> ;
-	var endtime = <?php echo $endtime;?> ;
+	var activatetime = <?php echo $activatetime;?>;
+	var starttime = <?php echo $starttime ;?> ;
+	var endtime = <?php echo $endtime ;?> ;
 	var offset = 0;
 	var date = new Date(initial*1000);
 	var timeleftelt = document.getElementById("timeleft");
@@ -216,7 +255,7 @@ function getProbDescription(probid)
 		</table>
 	</div>
 
-	<div id="submitlist">
+	<div id="submitlist" <?php if(!$isstart) {echo "style='display:none'";} ?>>
 		<h3 class="teamoverview">Submissions</h3>
 
 	<script type="text/javascript">
@@ -239,18 +278,74 @@ function getProbDescription(probid)
 	<p id="submitform">
 	<input type="hidden" name="nc" value="<?php echo $hidvalform; ?>">
 	<input type="hidden" name="us" value="<?php echo $ussr; ?>">
-	<input type="file" name="maincode" id="maincode" required multiple />
+	<input type="file" name="maincode" id="maincode" required accept=".sql" />
 	<select name="probid" id="probid">
-	<option value="1">A</option>
-	<option value="2">B</option>
-	<option value="3">C</option>
-	<option value="4">D</option>
-	<option value="5">E</option>
-	<option value="6">F</option>
-	<option value="8">G</option>
-	<option value="9">H</option>
-	<option value="11">I</option>
-	<option value="12">J</option>
+	<?php for($i=0;$i<$probSums;$i++) { 
+			$huruf = $i+1;?>
+		<option value="<?php echo $huruf ;?>">
+				<?php
+					
+					switch ($huruf) {
+					 	case '1':
+					 		?>A</option><?php
+					 		break;
+					 	case '2':
+					 		?>B</option><?php
+					 		break;
+					 	case '3':
+					 		?>C</option><?php
+					 		break;
+					 	case '4':
+					 		?>D</option><?php
+					 		break;
+					 	case '5':
+					 		?>E</option><?php
+					 		break;
+					 	case '6':
+					 		?>F</option><?php
+					 		break;
+					 	case '7':
+					 		?>G</option><?php
+					 		break;
+					 	case '8':
+					 		?>H</option><?php
+					 		break;
+					 	case '9':
+					 		?>I</option><?php
+					 		break;
+					 	case '10':
+					 		?>J</option><?php
+					 		break;
+					 	case '11':
+					 		?>K</option><?php
+					 		break;
+					 	case '12':
+					 		?>L</option><?php
+					 		break;
+					 	case '13':
+					 		?>M</option><?php
+					 		break;
+					 	case '14':
+					 		?>N</option><?php
+					 		break;
+					 	case '15':
+					 		?>O</option><?php
+					 		break;
+					 	case '16':
+					 		?>P</option><?php
+					 		break;
+					 	case '17':
+					 		?>Q</option><?php
+					 		break;
+					 	case '18':
+					 		?>R</option><?php
+					 		break;
+					 	default:
+					 		?>ZZ</option><?php
+					 		break;
+					 } 
+				?>
+			<?php } ?>
 	<option value="" selected="selected">problem</option>
 	</select>
 	<select name="langid" id="langid">
@@ -298,10 +393,10 @@ function getProbDescription(probid)
 				case '0':
 					echo 'sol_correct">correct';
 					break;
-				case '1':
+				case '2':
 					echo 'sol_incorrect">wrong-answer';
 					break;
-				case '2':
+				case '1':
 					echo 'sol_incorrect">syntax-error';
 					break;
 				case '666':

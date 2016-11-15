@@ -316,9 +316,19 @@ function checkUploadForm()
 		probelt.className = "errorfield";
 		error = true;
 	}
+	var filerr = false;
 	if ( filename === "" ) {
 		error = true;
+	} else{
+    	var res = filename.split(".");
+    	if(res[1] != "SQL") {
+    		if(res[1] != "sql"){
+    			error = true;
+    			alert('CANNOT UPLOAD NON SQL FILE!!!');
+    		}
+    	}
 	}
+
 	if ( error ) return false;
 
 	var auxfileno = 0;
@@ -442,15 +452,23 @@ function updateClock()
 	var fmt = "";
 	if (curtime >= starttime && curtime < endtime ) {
 		var left = endtime - curtime;
+		left += 3600;
 		var what = "time left: ";
 	} else if (curtime >= activatetime && curtime < starttime ) {
 		var left = starttime - curtime;
+		left += 3600;
 		var what = "time to start: ";
 	} else {
 		var left = 0;
 		var what = "";
 	}
 
+
+	
+	// console.log("curtime => " + curtime);
+	// console.log("starttime => " + starttime);
+	// console.log("activatetime => " + activatetime);
+	// console.log("left => " + left );
 	if ( left ) {
 		if ( left > 24*60*60 ) {
 			var d = Math.floor(left/(24*60*60));
@@ -467,7 +485,7 @@ function updateClock()
 		fmt += m + ":";
 		left -= m * 60;
 		if ( left < 10 ) { fmt += "0"; }
-		fmt += left;
+		fmt += Math.round(left);
 	}
 
 	timeleftelt.innerHTML = what + fmt;

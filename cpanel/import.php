@@ -20,13 +20,13 @@
 	<h2>Input Data</h2>
 	<br>
 	<br>
-	<form action="./import.php" method="POST" enctype="multipart/form-data">
+	<form action="import.php" method="POST" enctype="multipart/form-data">
 		<label for="file">Pilih File</label>
 		<input type="file" name="file" id="file" accept=".csv" />
 		<br>
 		<br>
 		<input type="hidden" name="const" id="const" value="asd" />
-		<input type="submit" name="cluster" id="cluster" value="cluster">
+		<input type="submit" name="cluster" id="cluster" value="IMPORT">
 	</form>
 	<br/>
 <?php

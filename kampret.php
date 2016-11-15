@@ -1,13 +1,9 @@
 <?php
 
-function random_color_part() {
-    return str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT);
-}
+$date = date_create('2014-11-15 00:30:00');
+$tm = strtotime('2016-11-15 00:30:00');
+$now = strtotime("now");
+echo "tm => " . $tm . " now => " . $now;
 
-function random_color() {
-    return random_color_part() . random_color_part() . random_color_part();
-}
-
-echo random_color();
 
 ?>

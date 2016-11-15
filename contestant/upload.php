@@ -7,7 +7,7 @@
 	require_once '../model/submits.php';
 
 	$DBSUBS = new DB_SUBMIT();
-
+	
 	if(isset($_POST['submit'])){
 		$name_code = $_POST['nc'];
 		$probnum = $_POST['probid'];
@@ -34,7 +34,9 @@
 			$target_file = $target_dir . $name_file;
 			if(!file_exists($target_file)) {
 				//check time + write submission
+				
 				$ress = $DBSUBS->writeSub($sub_id, $name_code, $probnum, $target_file, $sbmtime, $checker);
+				$DBSUBS->close(); /// NOT INCLUDED
 				if(isset($ress)){
 					if($checker<0){
 						if(move_uploaded_file($_FILES["maincode"]["tmp_name"] , $target_file)) {

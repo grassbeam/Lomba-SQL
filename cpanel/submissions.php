@@ -100,10 +100,10 @@
 				case '0':
 					echo 'sol_correct">correct';
 					break;
-				case '1':
+				case '2':
 					echo 'sol_incorrect">wrong-answer';
 					break;
-				case '2':
+				case '1':
 					echo 'sol_incorrect">syntax-error';
 					break;
 				case '666':

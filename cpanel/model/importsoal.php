@@ -16,51 +16,46 @@
 				$this->conn = NULL;
 				die(oci_error());
 			}
-	 		$this->query[0] = "create table peserta(
+	 		$this->query[0] = "create table pesertainsert(
 		    id_peserta varchar2(6) not null,
 			nama varchar2(20) not null,
 			jurusan varchar2(30) not null,
 			total_sks  number not null,
 			primary key(id_peserta))";
-			$this->query[1] = "create table pelajaran(
+			$this->query[1] = "create table pelajaraninsert(
 		   kode_p varchar2(8) not null,
 		   mata_pelajaran varchar2(30) not null,
 		   jurusan varchar2(20) not null,
 		   sks number not null,
 		   primary key(kode_p))";
-			$this->query[2] = "create table jadwal(
+			$this->query[2] = "create table jadwalinsert(
 		   kode_p varchar2(8) not null,
 		   sesi_jadwal char(1) not null,
 		   semester varchar2(15) not null,
 		   tahun char(4) not null,
 		   gedung varchar2(15) not null,
 		   ruang char(5) not null,
-		   waktu char(6) not null,
-		   foreign key(kode_p) references pelajaran(kode_p)
+		   waktu char(6) not null
 		 )";
-			$this->query[3] = "create table pengajar(
+			$this->query[3] = "create table pengajarinsert(
 		   id_pengajar char(6) not null,
 		   nama varchar2(20) not null,
 		   jurusan varchar2(30) not null,
 		   honor number,
 		   primary key(id_pengajar)  
 		  )";
-			$this->query[4] = "create table kelas(
+			$this->query[4] = "create table kelasinsert(
 		    id_pengajar char(6) not null,
 		    kode_p varchar2(8) not null,
 			semester varchar2(15) not null,
-			tahun char(4) not null,
-			foreign key(id_pengajar) references pengajar(id_pengajar),
-			foreign key(kode_p) references pelajaran (kode_p)
+			tahun char(4) not null
 		  )";
-			$this->query[5] = "create table nilai(
+			$this->query[5] = "create table nilaiinsert(
 		    id_peserta varchar2(6) not null,
 			kode_p varchar2(8) not null,
 			semester varchar2(15) not null,
 			tahun char(4) not null,
-			huruf_mutu char(2) null,
-			foreign key(id_peserta) references peserta(id_peserta),
-			foreign key(kode_p) references pelajaran(kode_p)
+			huruf_mutu char(2) null
 		  )";
 
 	 	}
@@ -68,6 +63,17 @@
 	 	protected function check_connection() {
 			if(is_null($this->conn))
 			die('Error. uninitialize database connection');
+		}
+
+		function commit(){
+			$this->check_connection();
+			$stmt = oci_parse($this->conn, "commit");
+			$r = oci_execute($stmt);
+			if($r) {
+				return 1;
+			} else {
+				return NULL;
+			}
 		}
 
 	 	function executeAll(){
@@ -86,10 +92,18 @@
 	 				$flags = false;
 	 			}
 	 		}
-	 		oci_close($this->conn);
+	 		
 	 		if($flags) {
-	 			return 666;
+	 			$committing = $this->commit();
+	 			if(!isset($committing)) {
+	 				oci_close($this->conn);
+	 				return NULL;
+	 			} else {
+	 				oci_close($this->conn);
+	 				return 666;
+	 			}
 	 		} else {
+	 			oci_close($this->conn);
 	 			return NULL;
 	 		}
 	 	}
