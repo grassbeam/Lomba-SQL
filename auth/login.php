@@ -17,6 +17,7 @@
 			// var_dump($logs);
 			if(isset($logs)){
 				//echo "<script>console.log('masuk loh');</script>";
+				$_SESSION['LOMBA'] = 1;
 				redirect('../');
 			} else {
 				$invalid = true;

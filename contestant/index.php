@@ -8,62 +8,66 @@
 	require_once '../model/scoreboard-oracle.php';
 	require_once '../model/timer.php';
 
-	$hidvalform = $_SESSION['NAME_CODE'];
-	$ussr = $_SESSION['USERNAME'];
 	
-	$DBSUBS = new DB_SUBMIT();
-	$TIMER = new TIMER();
+	if(isset($_SESSION['NAME_CODE'])) {
+		if(!isset($_SESSION['LOMBA']) || $_SESSION['LOMBA'] != 1 ) {
+			redirect('../auth/logout.php');
+		}
+		$hidvalform = $_SESSION['NAME_CODE'];
+		$ussr = $_SESSION['USERNAME'];
+		
+		$DBSUBS = new DB_SUBMIT();
+		$TIMER = new TIMER();
 
-	$submitlist = $DBSUBS->getSubmission($hidvalform);
-	$kosong = true;
-	if(isset($submitlist)){
-		$kosong = false;
-	}
-	$starttime = "1478982205.000000000"; // select from db later
-	$endtime = "1478992277.000000000"; // select from db later
-	$activatetime = "147892105.000000000";
-	$timernow = strtotime("now");
-	$stm = $TIMER->getStart();
-	$etm = $TIMER->getEnd();
-	$atm = $TIMER->getActivate();
-	$itm = $TIMER->getInit();
+		$submitlist = $DBSUBS->getSubmission($hidvalform);
+		$kosong = true;
+		if(isset($submitlist)){
+			$kosong = false;
+		}
+		$starttime = "1478982205.000000000"; // select from db later
+		$endtime = "1478992277.000000000"; // select from db later
+		$activatetime = "147892105.000000000";
+		$timernow = strtotime("now");
+		$stm = $TIMER->getStart();
+		$etm = $TIMER->getEnd();
+		$atm = $TIMER->getActivate();
+		$itm = $TIMER->getInit();
 
 
-	
+		
 
-	$TIMER->close();
-	if(isset($stm)) {
-		$stm = strtotime($stm);
-		$starttime = $stm;
-	}
-	if(isset($etm)) {
-		$etm = strtotime($etm);	
-		$endtime = $etm;
-	}
-	if(isset($atm)) {
-		$atm = strtotime($atm);
-		$activatetime = $atm;
-	}
-	if(isset($itm)) {
-		$timernow = $itm;
-	}
+		$TIMER->close();
+		if(isset($stm)) {
+			$stm = strtotime($stm);
+			$starttime = $stm;
+		}
+		if(isset($etm)) {
+			$etm = strtotime($etm);	
+			$endtime = $etm;
+		}
+		if(isset($atm)) {
+			$atm = strtotime($atm);
+			$activatetime = $atm;
+		}
+		if(isset($itm)) {
+			$timernow = $itm;
+		}
 
-	$isstart = false;
-	if($starttime < $timernow){
 		$isstart = true;
-	}
+		// var_dump($isstart);
+		$DBSBO = new SBO();
+		$SBdetail = $DBSBO->getContestantDetail($hidvalform);
+		$totalscore = $DBSBO->getTotalScore($hidvalform);
+		$totalac = $DBSBO->getTotalAC($hidvalform);
+		$probSums = $DBSBO->getProbnum();
 
-	$DBSBO = new SBO();
-	$SBdetail = $DBSBO->getContestantDetail($hidvalform);
-	$totalscore = $DBSBO->getTotalScore($hidvalform);
-	$totalac = $DBSBO->getTotalAC($hidvalform);
-	$probSums = $DBSBO->getProbnum();
-
-	$DBSBO->close();
-	if(!isset($SBdetail) || !isset($probSums) ){
-		die('<h1>ERROR DATABASE</h1>');
-		exit();
+		$DBSBO->close();
+		if(!isset($SBdetail) || !isset($probSums) ){
+			die('<h1>ERROR DATABASE</h1>');
+			exit();
+		}
 	}
+	
 ?>
 
 <!DOCTYPE html>
@@ -74,16 +78,33 @@
 	<link rel="stylesheet" href="../css/style.css">
 	<script type="text/javascript" src="../js/jquery.min.js"></script>
 	<script type="text/javascript" src="../js/domjudge.js"></script>
+	<script type="text/javascript">
+		function startTime() {
+    var today = new Date();
+    var h = today.getHours();
+    var m = today.getMinutes();
+    var s = today.getSeconds();
+    m = checkTime(m);
+    s = checkTime(s);
+    document.getElementById('timer').innerHTML = "Jam: " + 
+    h + ":" + m + ":" + s;
+    var t = setTimeout(startTime, 500);
+}
+function checkTime(i) {
+    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+    return i;
+}
+	</script>
 </head>
-<body>
+<body onload="startTime()">
 	<nav>
 	<div id="menutop">
 		<a target="_top" href="index.php" accesskey="o"><span class="octicon octicon-home"></span> overview</a>
-		<a target="_top" href="problems.php" accesskey="t"><span class="octicon octicon-book"></span> problems</a>
+		<a target="_top" href="../problem/" accesskey="t"><span class="octicon octicon-book"></span> problems</a>
 	</div>
 
 <div id="menutopright">
-<div id="clock"><span id="timeleft"></span><div id="username">logged in as <abbr title="team">Contestant user</abbr> <a href="../auth/logout.php">×</a></div></div>
+<div id="clock"><span id="timer"></span><div id="username">logged in as <abbr title="team">Contestant user</abbr> <a href="../auth/logout.php">×</a></div></div>
 <script type="text/javascript">
 	var initial = <?php echo $timernow;?>;
 	var activatetime = <?php echo $activatetime;?>;
@@ -93,8 +114,8 @@
 	var date = new Date(initial*1000);
 	var timeleftelt = document.getElementById("timeleft");
 
-	setInterval(function(){updateClock();},1000);
-	updateClock();
+	// setInterval(function(){updateClock();},1000);
+	// updateClock();
 </script>
 </div></nav>
 
@@ -126,7 +147,8 @@ function getProbDescription(probid)
 	}
 }
 </script>
-<h2 id="teamwelcome">Welcome <?php if(isset($_SESSION['NAME'])) echo $_SESSION['NAME']; else "NO_NAME"; ?></h2>
+<h2 id="teamwelcome">Welcome <?php if(isset($_SESSION['NAME'])) echo $_SESSION['USERNAME']; else "NO_NAME"; ?></h2>
+	<?php if($isstart) {?>
 	<div class="teamscoresummary">
 		<table class="scoreboard center">
 			<colgroup><col id="scorerank" /><col id="scoreaffil" /><col id="scoreteamname" /></colgroup><colgroup><col id="scoresolv" /><col id="scoretotal" /></colgroup>
@@ -140,65 +162,89 @@ function getProbDescription(probid)
 					<!-- PROBLEM LIST -->
 				<?php for($i=0;$i<$probSums;$i++) { ?>
 				<th title="Problem <?php echo $i+1; ?>" scope="col">
+				
 				<?php
 					$huruf = $i+1;
 					switch ($huruf) {
 					 	case '1':
-					 		?> A <div class="circle" style="background: #ff00ff;"><?php
+					 		$str = "A";
+					 		?><a href="../problem/<?php echo $str?>.pdf"> A <div class="circle" style="background: #ff00ff;"><?php
 					 		break;
 					 	case '2':
-					 		?> B <div class="circle" style="background: #6d4ea5;"><?php
+					 		$str = "B";
+					 		?><a href="../problem/<?php echo $str?>.pdf">B <div class="circle" style="background: #ef30b3;"><?php
 					 		break;
 					 	case '3':
-					 		?> C <div class="circle" style="background: #8b4ec1;"><?php
+					 		$str = "C";
+					 		?><a href="../problem/<?php echo $str?>.pdf">C <div class="circle" style="background: #8b4ec1;"><?php
 					 		break;
 					 	case '4':
-					 		?> D <div class="circle" style="background: #bea0f0;"><?php
+					 		$str = "D";
+					 		?><a href="../problem/<?php echo $str?>.pdf"> D <div class="circle" style="background: #bea0f0;"><?php
 					 		break;
 					 	case '5':
-					 		?> E <div class="circle" style="background: #87011f;"><?php
+					 		$str = "E";
+					 		?><a href="../problem/<?php echo $str?>.pdf"> E <div class="circle" style="background: #87011f;"><?php
 					 		break;
 					 	case '6':
-					 		?> F <div class="circle" style="background: #855ef9;"><?php
+					 		$str = "F";
+					 		?><a href="../problem/<?php echo $str?>.pdf"> F <div class="circle" style="background: #855ef9;"><?php
 					 		break;
 					 	case '7':
-					 		?> G <div class="circle" style="background: #0f077b;"><?php
+					 		$str = "G";
+					 		?><a href="../problem/<?php echo $str?>.pdf">G <div class="circle" style="background: #0f077b;"><?php
 					 		break;
 					 	case '8':
-					 		?> H <div class="circle" style="background: #cc78ed;"><?php
+					 		$str = "H";
+					 		?><a href="../problem/<?php echo $str?>.pdf">H <div class="circle" style="background: #cc78ed;"><?php
 					 		break;
 					 	case '9':
-					 		?> I <div class="circle" style="background: #1a4c38;"><?php
+					 		$str = "I";
+					 		?><a href="../problem/<?php echo $str?>.pdf">I <div class="circle" style="background: #1a4c38;"><?php
 					 		break;
 					 	case '10':
-					 		?> J <div class="circle" style="background: #da6234;"><?php
+					 		$str = "J";
+					 		?><a href="../problem/<?php echo $str?>.pdf">J <div class="circle" style="background: #da6234;"><?php
 					 		break;
 					 	case '11':
-					 		?> K <div class="circle" style="background: #ff00ff;"><?php
+					 		$str = "K";
+					 		?><a href="../problem/<?php echo $str?>.pdf">K <div class="circle" style="background: #ff00ff;"><?php
 					 		break;
 					 	case '12':
-					 		?> L <div class="circle" style="background: #10c5e4;"><?php
+					 		$str = "L";
+					 		?><a href="../problem/<?php echo $str?>.pdf">L <div class="circle" style="background: #10c5e4;"><?php
 					 		break;
 					 	case '13':
-					 		?> M <div class="circle" style="background: #653b72;"><?php
+					 		$str = "M";
+					 		?><a href="../problem/<?php echo $str?>.pdf">M <div class="circle" style="background: #653b72;"><?php
 					 		break;
 					 	case '14':
-					 		?> N <div class="circle" style="background: #5ad9dc;"><?php
+					 		$str = "N";
+					 		?><a href="../problem/<?php echo $str?>.pdf">N <div class="circle" style="background: #5ad9dc;"><?php
 					 		break;
 					 	case '15':
-					 		?> O <div class="circle" style="background: #36e57e;"><?php
+					 		$str = "O";
+					 		?><a href="../problem/<?php echo $str?>.pdf">O <div class="circle" style="background: #36e57e;"><?php
 					 		break;
 					 	case '16':
-					 		?> P <div class="circle" style="background: #e0066e;"><?php
+					 		$str = "P";
+					 		?><a href="../problem/<?php echo $str?>.pdf">P <div class="circle" style="background: #e0066e;"><?php
 					 		break;
 					 	case '17':
-					 		?> Q <div class="circle" style="background: #98f949;"><?php
+					 		$str = "Q";
+					 		?><a href="../problem/<?php echo $str?>.pdf">Q <div class="circle" style="background: #98f949;"><?php
 					 		break;
 					 	case '18':
-					 		?> R <div class="circle" style="background: #cea595;"><?php
+					 		$str = "R";
+					 		?><a href="../problem/<?php echo $str?>.pdf">R <div class="circle" style="background: #cea595;"><?php
+					 		break;
+					 	case '19':
+					 		$str = "S";
+					 		?><a href="../problem/<?php echo $str?>.pdf">S <div class="circle" style="background: #cea515;"><?php
 					 		break;
 					 	default:
-					 		?> ZZ <div class="circle" style="background: #ef30b3;"><?php
+					 		$str = "ZZ";
+					 		?><a href="../problem/<?php echo $str?>.pdf">ZZ <div class="circle" style="background: #ef30b3;"><?php
 					 		break;
 					 } 
 				?>
@@ -216,7 +262,7 @@ function getProbDescription(probid)
 							<td class="scorepl">?<?php //echo $counter; ?></td>
 							<td class="scoreaf"> <img src="../images/IDN.png" alt="IDN" title="IDN" /></td>
 							<td class="scoretn">
-								<?php if(isset($_SESSION['NAME'])) echo $_SESSION['NAME']; else "NO_NAME"; ?> <br /><span class="univ"><?php if(isset($_SESSION['SCHOOL'])) echo $_SESSION['SCHOOL']; else "UNKNOWN"; ?></span>
+								<?php if(isset($_SESSION['NAME'])) echo $_SESSION['USERNAME']; else "NO_NAME"; ?> <br /><span class="univ"><?php if(isset($_SESSION['SCHOOL'])) echo $_SESSION['NAME_CODE']; else "UNKNOWN"; ?></span>
 							</td>
 							<td class="scorenc"><?php echo $totalac; ?></td> <!--Total soal submited -->
 							<td class="scorett"><?php echo $totalscore; ?></td>
@@ -254,6 +300,7 @@ function getProbDescription(probid)
 			</tbody>	
 		</table>
 	</div>
+	
 
 	<div id="submitlist" <?php if(!$isstart) {echo "style='display:none'";} ?>>
 		<h3 class="teamoverview">Submissions</h3>
@@ -274,7 +321,8 @@ function getProbDescription(probid)
 		}
 	});
 	</script>
-	<form style="display:inline;" action="upload.php" method="post" enctype="multipart/form-data" onreset="resetUploadForm(30, 100);">
+	
+	<form style="display:<?php if($isstart) echo "inline"; else echo "hidden";?>;" action="upload.php" method="post" enctype="multipart/form-data" onreset="resetUploadForm(30, 100);">
 	<p id="submitform">
 	<input type="hidden" name="nc" value="<?php echo $hidvalform; ?>">
 	<input type="hidden" name="us" value="<?php echo $ussr; ?>">
@@ -360,7 +408,6 @@ function getProbDescription(probid)
 
 	</p>
 	</form>
-
 	<table class="list sortable submissions">
 <thead>
 <tr><th scope="col">time</th><th scope="col">problem</th><th scope="col">file</th><th scope="col">result</th></tr>
@@ -420,5 +467,6 @@ function getProbDescription(probid)
 
 
 	</div>
+	<?php }?>
 </body>
 </html>

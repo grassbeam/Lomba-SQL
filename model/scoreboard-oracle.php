@@ -30,7 +30,7 @@
 
 		function getProbnum(){
 			$this->check_connection();
-			$query = "SELECT (COUNT(*)-1) KAMPRETOS FROM problem";
+			$query = "SELECT COUNT(*) KAMPRETOS FROM problem";
 			$result = $this->select($query);
 			
 			$ress = array(array());

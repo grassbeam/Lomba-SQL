@@ -6,6 +6,9 @@
 	require_once '../utility/utility.php';
 	require_once './model/scoreboard-oracle.php';
 	require_once './controller/scoreboard-controller.php';
+	$scoreboard = new SBO();
+	$sblist = $scoreboard->getContestantRank();
+	$probnum = $scoreboard->getSumProb();
 	if(!isset($probnum)) {
 		die('ERROR DATABASE PROBLEM!!!');
 	}
@@ -154,15 +157,16 @@
 					$counter = 1;
 					foreach ($sblist as $scl) {
 						$SBdetail = $scoreboard->getProbScore($scl['NAME_CODE']);
+						$SBinfo = $scoreboard->getInfo($scl['NAME_CODE']);
 						?>
-					<tr class="sortorderswitch" id="team:<?php echo $scl['NAME_CODE']?>">
+					<tr class="sortorderswitch" id="team:<?php echo $scl['NAME_CODE'];?>">
 						<td class="scorepl"><?php echo $counter; ?></td>
 						<td class="scoreaf"> <img src="../images/IDN.png" alt="IDN" title="IDN" /></td>
 						<td class="scoretn">
-							<?php echo $scl['NAME']?><br /><span class="univ"><?php echo $scl['SCHOOL']?></span>
+							<?php echo $scl['NAME_CODE'];?><br /><span class="univ"><?php echo $SBinfo['NAME_CODE'];?></span>
 						</td>
-						<td class="scorenc"><?php echo $probnum - $scl['VERD'] + 1;?></td> <!--Total soal submited -->
-						<td class="scorett"><?php echo $scl['TOTSCORE']?></td>
+						<td class="scorenc"><?php echo $scl['TOTAL_AC'];?></td> <!--Total soal submited -->
+						<td class="scorett"><?php echo $scl['TOTAL_TIME'];?></td>
 						<?php 
 							for($i=0;$i<$probnum;$i++) {
 						?>

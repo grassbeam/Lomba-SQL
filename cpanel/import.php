@@ -14,10 +14,10 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>IMPORT DAFTAR PESERTA</title>
+	<title>IMPORT DAFTAR PESERTA LOMBA</title>
 </head>
 <body>
-	<h2>Input Data</h2>
+	<h2>Input Data Peserta LOMBA ASLI <<< </h2>
 	<br>
 	<br>
 	<form action="import.php" method="POST" enctype="multipart/form-data">
@@ -63,6 +63,7 @@ if(isset($_POST['const'])) {
                 // var_dump($arr);
                 $US = new DB_USER();
                 $ress = $US->importUser($arr);
+                $US->close();
             ?>
             <div>
             <table>
@@ -76,7 +77,9 @@ if(isset($_POST['const'])) {
             </thead>
             <tbody>
 			<?php
+            // var_dump($ress);
 				foreach ($ress as $row) {
+                    // var_dump($row);
                     $aesde = new DB_HOBERT($row['USERNAME'], $row['PASSWORD']);
                     $resaesde = $aesde->executeAll();
                     if(!isset($resaesde)) {

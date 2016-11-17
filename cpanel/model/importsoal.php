@@ -11,6 +11,7 @@
 	 	function __construct($user_name , $password) {
 	 		// var_dump($user_name);
 	 		// var_dump($password);
+	 		// KALO ERROR DI SINI BERARTI DATABASE NYA BELUM DI BERSIHIN
 	 		$this->conn = oci_connect($user_name, $password, DBSTRINGCON);
 			if(!$this->conn) {
 				$this->conn = NULL;

@@ -8,7 +8,7 @@
 			$this->conn = oci_connect(DBUSER2, DBPASS2, DBSTRINGCON);
 			if(!$this->conn) {
 				$this->conn = NULL;
-				die(oci_error());
+				var_dump(oci_error());
 			}
 		}
 

@@ -126,14 +126,9 @@
 	<?php } ?>
 
 	<h3 id="newrequests">New Requests:</h3>
-	<?php
-		if(count($pendings[0]) > 0){
-			$counter = 1;
-			foreach ($pendings as $row) {
-			?>
-			<table class="list sortable">
+	<table class="list sortable">
 		<thead>
-			<tr>
+		<tr>
 				<th scope="col">ID</th>
 				<th scope="col">time</th>
 				<th scope="col">code-name</th>
@@ -143,7 +138,13 @@
 				<th scope="col">verified-by</th>
 			</tr>
 		</thead>
+		
 	<tbody>
+	<?php
+		if(count($pendings[0]) > 0){
+			$counter = 1;
+			foreach ($pendings as $row) {
+			?>
 		<tr class="<?php if($counter%2 ==0) echo "roweven"; else echo "rowodd" ?>" data-team-id="<?php echo $row['NAME_CODE']; ?>" data-problem-id="<?php echo $row['PROB_NUM'] ?>" data-language-id="sql" data-submission-id="<?php echo $row['SUB_ID']; ?>">
 			<td><a href="<?php echo "submission.php?id=" . $row['SUB_ID']; ?>"><?php echo $row['SUB_ID']; ?></a></td>
 			<td><a href="<?php echo "submission.php?id=" . $row['SUB_ID']; ?>">

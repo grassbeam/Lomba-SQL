@@ -9,7 +9,7 @@
 
 		function getContestantRank(){
 			$this->check_connection();
-			$query = "SELECT c.name_code, c.name, c.school, count(verdict) verd , Sum(s.time_after_penalty) totscore FROM scoreboard s JOIN contestant c ON(s.name_code = c.name_code) WHERE s.verdict!=0 group by c.name_code, c.name, c.school ORDER BY verd asc, totscore asc";
+			$query = "select s.name_code, (select count(*) from scoreboard sc where verdict = 0 and  sc.name_code = s.name_code) as total_AC, (select sum(sco.time_after_penalty) from scoreboard sco where sco.name_code = s.name_code) as total_Time from scoreboard s group by name_code order by total_ac desc, total_time asc";
 			$result = $this->select($query);
 			// var_dump($result);
 			$ress = array(array());
@@ -30,7 +30,7 @@
 
 		function getSumProb(){
 			$this->check_connection();
-			$query = "SELECT (COUNT(*)-1) NUM FROM problem";
+			$query = "SELECT COUNT(*) NUM FROM problem";
 			$result = $this->select($query);
 			$row = oci_fetch_assoc($result);
 			$nr = $row['NUM'];
@@ -57,6 +57,18 @@
 			    return $ress;
 			} else {
 			    return NULL;
+			}
+		}
+
+		function getInfo($name_code){
+			$this->check_connection();
+			$query = "SELECT * FROM contestant WHERE name_code = '" . $name_code . "'";
+			$result = $this->select($query);
+			$row = oci_fetch_assoc($result);
+			if(isset($row)){
+				return $row;
+			} else {
+				return NULL;
 			}
 		}
 
