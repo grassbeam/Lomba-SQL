@@ -9,7 +9,7 @@
 	total_sks  number not null,
 	primary key(id_peserta)
  );
- 
+
  create table pelajaran(
    kode_p varchar2(8) not null,
    mata_pelajaran varchar2(30) not null,
@@ -17,7 +17,7 @@
    sks number not null,
    primary key(kode_p)
  );
- 
+
  create table jadwal(
    kode_p varchar2(8) not null,
    sesi_jadwal char(1) not null,
@@ -28,15 +28,15 @@
    waktu char(6) not null,
    foreign key(kode_p) references pelajaran(kode_p)
  );
- 
+
  create table pengajar(
    id_pengajar char(6) not null,
    nama varchar2(20) not null,
    jurusan varchar2(30) not null,
    honor number,
-   primary key(id_pengajar)  
+   primary key(id_pengajar)
   );
-  
+
   create table nilai(
     id_peserta varchar2(6) not null,
 	kode_p varchar2(8) not null,
@@ -46,11 +46,11 @@
 	foreign key(id_peserta) references peserta(id_peserta),
 	foreign key(kode_p) references pelajaran(kode_p)
   );
- 
+
  </answer>
 		<tableUsed>peserta</tableUsed>
 	</problem>
-	
+
 	<problem>
 		<problemNumber>2</problemNumber>
 		<answer>insert into peserta(id_peserta,nama,jurusan,total_sks) values('00128','Zhang','Ilmu Komputer',102);
@@ -107,7 +107,7 @@
  insert into jadwal(kode_p,sesi_jadwal,semester,tahun,gedung,ruang,waktu) values
  ('CS-347','1','Ganjil','2014','Taylor','3128','Malam');
  insert into jadwal(kode_p,sesi_jadwal,semester,tahun,gedung,ruang,waktu) values
- ('EE-181','1','Genap','2014','Taylor','3128','Mazlam');
+ ('EE-181','1','Genap','2014','Taylor','3128','Malam');
  insert into jadwal(kode_p,sesi_jadwal,semester,tahun,gedung,ruang,waktu) values
  ('FIN-201','1','Genap','2015','Packard','101','Siang');
  insert into jadwal(kode_p,sesi_jadwal,semester,tahun,gedung,ruang,waktu) values
@@ -208,6 +208,6 @@
 		<problemNumber>17</problemNumber>
 		<answer>select nama as "Nama Pengajar", jurusan as "Jurusan", honor as "Honor" from Pengajar where honor > (select avg(honor) from pengajar)</answer>
 	</problem>
-	
-	
+
+
 </listAnswer>
